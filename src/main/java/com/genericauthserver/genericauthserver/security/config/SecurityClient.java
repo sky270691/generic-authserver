@@ -44,7 +44,6 @@ public class SecurityClient implements ClientDetails {
         return Set.of("writes","read");
     }
 
-
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
         return List.of(()->"writes");
@@ -52,7 +51,7 @@ public class SecurityClient implements ClientDetails {
 
     @Override
     public Set<String> getAuthorizedGrantTypes() {
-        return Set.of("password","authorization_code");
+        return Set.of("authorization_code","password");
     }
 
     @Override

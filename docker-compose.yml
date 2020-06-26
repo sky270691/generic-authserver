@@ -4,7 +4,7 @@ services:
   authserver:
     build: .
     ports:
-      - 80:8080
+      - 80:${APP_PORT}
     volumes:
       - type: volume
         source: maven-repo
@@ -12,6 +12,9 @@ services:
       - type: bind
         source: /apps/jwtauthserver
         target: /app:ro
+    environment:
+      - APP_PORT: 8080
+      - DB_SCHEMA: authserver
     links:
       - database:database
 
@@ -31,3 +34,4 @@ volumes:
   maven-repo:
     external:
       name: maven-repo
+
