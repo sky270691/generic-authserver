@@ -11,6 +11,7 @@ public class User {
     private long id;
     private String username;
     private String password;
+    private String fullname;
 
     @ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinTable(name = "user_authority",
@@ -48,5 +49,13 @@ public class User {
 
     public void setAuthorityList(List<Authority> authorityList) {
         this.authorityList = authorityList;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 }
