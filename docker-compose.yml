@@ -1,0 +1,19 @@
+version:  "3.8"
+
+services:
+  authserver:
+    build: .
+    ports:
+      - 80:9090
+    volumes:
+      - type: volume
+        source: maven-repo
+        target: /root/.m2
+      - type: bind
+        source: /apps/jwtauthserver
+        target: /app:ro
+
+volumes:
+  maven-repo:
+    external:
+      name: maven-repo
