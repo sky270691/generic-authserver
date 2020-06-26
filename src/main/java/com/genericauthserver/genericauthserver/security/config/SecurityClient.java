@@ -56,7 +56,7 @@ public class SecurityClient implements ClientDetails {
 
     @Override
     public Set<String> getRegisteredRedirectUri() {
-        return Set.of("http://authserver/mycode");
+        return Set.of("/mycode");
     }
 
 
