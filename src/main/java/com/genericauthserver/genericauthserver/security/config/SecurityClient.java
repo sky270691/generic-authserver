@@ -52,7 +52,7 @@ public class SecurityClient implements ClientDetails {
 
     @Override
     public Set<String> getAuthorizedGrantTypes() {
-        return Set.of("password","authorization_code","refresh_token");
+        return Set.of("password","authorization_code");
     }
 
     @Override
