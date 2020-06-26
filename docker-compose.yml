@@ -13,7 +13,7 @@ services:
         source: /apps/jwtauthserver
         target: /app:ro
     links:
-      - "database:database"
+      - database:database
 
 volumes:
   maven-repo:
