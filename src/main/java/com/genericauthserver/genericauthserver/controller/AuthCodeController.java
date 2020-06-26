@@ -17,7 +17,7 @@ public class AuthCodeController {
     @GetMapping("/mycode")
     public String getCode(@RequestParam String code){
         System.out.println(code);
-        String to= "langi.risky@gmail.com";
+        String to= "1802arthur@gmail.com";
         String subject="Verification Code";
         String text = "this is your verification code: "+code;
         SimpleMailMessage mailMessage = new SimpleMailMessage();
