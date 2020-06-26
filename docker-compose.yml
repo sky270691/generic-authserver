@@ -4,7 +4,7 @@ services:
   authserver:
     build: .
     ports:
-      - 80:${APP_PORT}
+      - "80:${APP_PORT}"
     volumes:
       - type: volume
         source: maven-repo
