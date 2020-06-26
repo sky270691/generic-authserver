@@ -15,6 +15,18 @@ services:
     links:
       - database:database
 
+  database:
+    image: postgres:12-alpine
+    ports:
+      -5432:5432
+    volumes:
+    - type: bind
+      source: /data/container/database/postgres
+      target: /var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=sky-high
+
 volumes:
   maven-repo:
     external:
