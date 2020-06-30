@@ -25,7 +25,7 @@ services:
 
   backend:
     build:
-      context: "."
+      context: "/apps/satutasmerah/backend-marketplace-stm/."
       dockerfile: /apps/satutasmerah/backend-marketplace-stm/Dockerfile-backend
     ports:
       - 80:8080
@@ -63,8 +63,8 @@ services:
         source: /data/container/database/satutasmerah/postgres
         target: /var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=adminstm
-      - POSTGRES_PASSWORD=4dm1n5tm
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=sky-high
 
 volumes:
   maven-repo:
