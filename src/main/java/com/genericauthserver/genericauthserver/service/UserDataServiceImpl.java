@@ -5,11 +5,11 @@ import com.genericauthserver.genericauthserver.repository.UserRepository;
 import com.genericauthserver.genericauthserver.security.config.SecurityUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
-
-public class UserDataServiceImpl implements UserDetailsService {
+@Service
+public class UserDataServiceImpl implements UserDataService {
 
     @Autowired
     private UserRepository userRepository;
