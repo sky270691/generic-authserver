@@ -21,7 +21,7 @@ services:
       - APP_PORT=8080
       - DB_SCHEMA=authserver
     links:
-      - database-auth:databases
+      - database-auth:database
 
   backend:
     build:
@@ -63,8 +63,8 @@ services:
         source: /data/container/database/satutasmerah/postgres
         target: /var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=sky-high
+      - POSTGRES_USER=adminstm
+      - POSTGRES_PASSWORD=4dm1n5tm
 
 volumes:
   maven-repo:
