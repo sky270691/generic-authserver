@@ -38,7 +38,7 @@ services:
         target: /app/backend-stm:rw
     environment:
       - APP_PORT=8080
-      - DB_SCHEMA=marketplace
+      - DB_SCHEMA=satutasmerah
 
   database-auth:
     image: postgres:12-alpine
