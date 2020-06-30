@@ -12,6 +12,9 @@ services:
       - type: bind
         source: /apps/jwtauthserver
         target: /app:rw
+      - type: bind
+        source: /apps/jwtauthserver/logs
+        target: /logs/log
     environment:
       - APP_PORT=8080
       - DB_SCHEMA=authserver
