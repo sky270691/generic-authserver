@@ -21,7 +21,7 @@ services:
       - APP_PORT=8080
       - DB_SCHEMA=authserver
     links:
-      - database:database-auth
+      - database-auth:database
 
   backend:
     build:
@@ -40,7 +40,7 @@ services:
       - APP_PORT=8080
       - DB_SCHEMA=satutasmerah
     links:
-      - backend:database-backend
+      - database-backend:dbbackend
 
   database-auth:
     image: postgres:12-alpine
