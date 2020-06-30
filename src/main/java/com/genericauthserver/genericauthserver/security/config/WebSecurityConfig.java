@@ -23,10 +23,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return NoOpPasswordEncoder.getInstance();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService(){
-        return new UserDataServiceImpl();
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService(){
+//        return new UserDataServiceImpl();
+//    }
 
     @Override
     @Bean
