@@ -1,7 +1,7 @@
 FROM openjdk:13-alpine
 USER root
-COPY . /app/authserver
-WORKDIR /app/authserver
+COPY . /app/backend-stm
+WORKDIR /app/backend-stm
 RUN chmod +x ./mvnw
 ENTRYPOINT ["./mvnw"]
 CMD ["spring-boot:run"]

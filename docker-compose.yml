@@ -13,17 +13,34 @@ services:
         target: /root/.m2
       - type: bind
         source: /apps/jwtauthserver
-        target: /app:rw
+        target: /app/authserver:rw
       - type: bind
         source: /apps/jwtauthserver/logs
-        target: /logs
+        target: /logs/authserver
     environment:
       - APP_PORT=8080
       - DB_SCHEMA=authserver
     links:
-      - database:database
+      - database-auth:database
 
-  database:
+  backend:
+    build:
+      context: "."
+      dockerfile: /apps/satutasmerah/backend-marketplace-stm/Dockerfile-backend
+    ports:
+      - 80:8080
+    volumes:
+      - type: volume
+        source: maven-repo
+        target: /root/.m2
+      - type: bind
+        source: /apps/satutasmerah
+        target: /app/backend-stm
+    environment:
+      - APP_PORT=8080
+      - DB_SCHEMA=satutasmerah
+
+  database-auth:
     image: postgres:12-alpine
     ports:
       - 5432:5432
@@ -31,6 +48,18 @@ services:
     - type: bind
       source: /data/container/database/authserver/postgres
       target: /var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=sky-high
+
+  database-backend:
+    image: postgres:12-alpine
+    ports:
+      - 5431:5432
+    volumes:
+      - type: bind
+        source: /data/container/database/satutasmerah/postgres
+        target: /var/lib/postgresql/data
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=sky-high
