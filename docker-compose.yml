@@ -2,8 +2,9 @@ version:  "3.8"
 
 services:
   authserver:
-    build: .
-    dockerfile: Dockerfile-auth
+    build:
+      context: "."
+      dockerfile: Dockerfile-auth
     ports:
       - 81:8080
     volumes:
