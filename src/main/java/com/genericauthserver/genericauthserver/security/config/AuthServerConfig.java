@@ -22,9 +22,9 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
     private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
+//
+//    @Autowired
+//    private UserDetailsService userDetailsService;
 
     @Bean
     public TokenStore tokenStore(){
@@ -53,7 +53,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.authenticationManager(authenticationManager)
                 .tokenStore(tokenStore())
-                .userDetailsService(userDetailsService)
+//                .userDetailsService(userDetailsService)
                 .accessTokenConverter(jwtAccessTokenConverter());
     }
 
