@@ -53,7 +53,6 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.authenticationManager(authenticationManager)
                 .tokenStore(tokenStore())
-//                .userDetailsService(userDetailsService)
                 .accessTokenConverter(jwtAccessTokenConverter());
     }
 
