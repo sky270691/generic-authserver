@@ -11,7 +11,10 @@ public class User {
     private long id;
     private String username;
     private String password;
-    private String fullname;
+    @Column(name = "first_name")
+    private String firstName;
+    @Column(name = "last_name")
+    private String lastName;
 
     @ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinTable(name = "user_authority",
@@ -51,11 +54,19 @@ public class User {
         this.authorityList = authorityList;
     }
 
-    public String getFullname() {
-        return fullname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }
