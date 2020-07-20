@@ -30,7 +30,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic();
         http.authorizeRequests().mvcMatchers("/mycode").authenticated();
         http.authorizeRequests().mvcMatchers("/api/v1/login*/*").permitAll();
     }
