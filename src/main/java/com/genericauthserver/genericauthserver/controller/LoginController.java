@@ -19,12 +19,12 @@ public class LoginController {
     }
 
     @PostMapping
-    public ResponseEntity<?> loginUser(@RequestBody Map<String,String> usernamePass){
+    public ResponseEntity<?> loginUser(){
 
         System.out.println("login user called");
-        if(usernamePass.containsKey("username") && usernamePass.containsKey("password")){
-            userDataService.login(usernamePass.get("username"),usernamePass.get("password"));
-        }
+//        if(usernamePass.containsKey("username") && usernamePass.containsKey("password")){
+//            userDataService.login(usernamePass.get("username"),usernamePass.get("password"));
+//        }
         return ResponseEntity.ok().build();
     }
 
