@@ -44,6 +44,7 @@ public class UserDataServiceImpl implements UserDataService {
         return userRepository.findByUsername(username).orElseThrow(()->new UserException("User with username: '"+username+"' not found"));
     }
 
+    @Override
     public void login(String username, String password){
         String authHeaderPrefix = "Basic ";
         String credential = Base64.getEncoder().encodeToString((username+":"+password).getBytes());
