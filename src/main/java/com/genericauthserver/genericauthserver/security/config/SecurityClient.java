@@ -72,7 +72,7 @@ public class SecurityClient implements ClientDetails {
 
     @Override
     public boolean isAutoApprove(String scope) {
-        return scope.equalsIgnoreCase("read");
+        return scope.equalsIgnoreCase("READ_WRITE");
     }
 
     @Override
