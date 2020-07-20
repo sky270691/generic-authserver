@@ -26,7 +26,7 @@ public class SecurityClient implements ClientDetails {
 
     @Override
     public boolean isSecretRequired() {
-        return false;
+        return true;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class SecurityClient implements ClientDetails {
 
     @Override
     public Set<String> getScope() {
-        return Set.of("writes","read");
+        return Set.of("READ_WRITE");
     }
 
     @Override
@@ -56,7 +56,7 @@ public class SecurityClient implements ClientDetails {
 
     @Override
     public Set<String> getRegisteredRedirectUri() {
-        return Set.of("/mycode");
+        return Set.of("/authcode");
     }
 
 

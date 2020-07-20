@@ -18,7 +18,7 @@ public class AuthCodeController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @GetMapping("/mycode")
+    @GetMapping("/authcode")
     public String getCode(@RequestParam String code){
         System.out.println(code);
         logger.info("someone is trying to get code");
