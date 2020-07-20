@@ -26,7 +26,7 @@ public class SecurityClient implements ClientDetails {
 
     @Override
     public boolean isSecretRequired() {
-        return true;
+        return false;
     }
 
     @Override
