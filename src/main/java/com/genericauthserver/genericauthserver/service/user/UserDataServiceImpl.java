@@ -7,6 +7,7 @@ import com.genericauthserver.genericauthserver.security.config.SecurityUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -51,9 +52,12 @@ public class UserDataServiceImpl implements UserDataService {
         HttpHeaders headers = new HttpHeaders();
 //        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.set("Authorization",fullAuthHeader);
+        String url = "http://localhost:8080/oauth/authorize?scope=READ_WRITE&client_id=front-stm&response_type=code";
+
+        HttpEntity entity = new HttpEntity(headers);
 
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getForEntity("http://localhost:8080/oauth/authorize?scope=READ_WRITE&client_id=front-stm&response_type=code",String.class,headers);
+        restTemplate.exchange(url, HttpMethod.GET,entity,String.class,null,null);
     }
 
 
