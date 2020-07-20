@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/login")
+@RequestMapping("/api/v1")
 public class LoginController {
 
     private final UserDataService userDataService;
@@ -25,7 +25,7 @@ public class LoginController {
         this.logger  = LoggerFactory.getLogger(this.getClass());
     }
 
-    @PostMapping
+    @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody Map<String,String> userCredential, HttpServletRequest request){
 
         logger.info(request.getRequestURI()+" requested");
@@ -43,7 +43,7 @@ public class LoginController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/auth_code")
     public ResponseEntity<?> userLoginCode(@RequestBody Map<String,String> authCode, HttpServletRequest request){
 
         Map<String,String> tokenResponse = new LinkedHashMap<>();
