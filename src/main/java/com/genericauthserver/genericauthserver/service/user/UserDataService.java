@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface UserDataService extends UserDetailsService{
 
     User getUserByUsername(String username);
+    void login(String username, String password);
 }

@@ -40,6 +40,8 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
         clients.withClientDetails(appClientService());
     }
 
+
+
     @Bean
     public AppClientServiceImpl appClientService(){
         return new AppClientServiceImpl();
