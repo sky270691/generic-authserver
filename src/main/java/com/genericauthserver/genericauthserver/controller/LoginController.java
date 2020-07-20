@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RestController
@@ -42,15 +43,22 @@ public class LoginController {
         }
     }
 
-//    @PostMapping
-//    public ResponseEntity<?> userLoginCode(@RequestBody Map<String,String> authCode, HttpServletRequest request){
-//
-//        Map<String,String> tokenResponse = new HashMap<>();
-//
-//        if(authCode.containsKey("code")){
-//
-//        }
-//
-//    }
+    @PostMapping
+    public ResponseEntity<?> userLoginCode(@RequestBody Map<String,String> authCode, HttpServletRequest request){
+
+        Map<String,String> tokenResponse = new LinkedHashMap<>();
+
+        if(authCode.containsKey("code")){
+            String token = userDataService.getJwtToken(authCode.get("code"));
+            tokenResponse.put("status","success");
+            tokenResponse.put("access_token",token);
+            return ResponseEntity.ok(tokenResponse);
+        }else{
+            tokenResponse.put("status","error");
+            tokenResponse.put("message","error getting token");
+            return ResponseEntity.badRequest().body(tokenResponse);
+        }
+
+    }
 
 }
