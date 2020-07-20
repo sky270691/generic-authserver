@@ -77,7 +77,7 @@ public class UserDataServiceImpl implements UserDataService {
         multiValueMap.add("code",authCode);
 
         HttpEntity<MultiValueMap<String,String>> entity =new HttpEntity<>(multiValueMap,headers);
-        String url = "http://localhost:8080/oauth/token?grant_type=authorization_code&code=rfu9Ca";
+        String url = "http://localhost:8080/oauth/token";
 
         ResponseEntity<String> response = restTemplate.postForEntity(url,entity,String.class);
 
