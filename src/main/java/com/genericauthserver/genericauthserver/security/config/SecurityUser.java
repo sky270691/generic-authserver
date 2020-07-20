@@ -25,6 +25,14 @@ public class SecurityUser implements UserDetails {
         return authorities;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String getPassword() {
         return user.getPassword();
