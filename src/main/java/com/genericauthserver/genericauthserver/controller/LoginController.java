@@ -21,6 +21,7 @@ public class LoginController {
     @PostMapping
     public ResponseEntity<?> loginUser(@RequestBody Map<String,String> usernamePass){
 
+        System.out.println("login user called");
         if(usernamePass.containsKey("username") && usernamePass.containsKey("password")){
             userDataService.login(usernamePass.get("username"),usernamePass.get("password"));
         }
