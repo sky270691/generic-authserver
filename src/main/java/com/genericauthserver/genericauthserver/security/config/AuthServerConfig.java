@@ -47,18 +47,10 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
 
     @Bean
-    public TokenEnhancer customTokenEnhancer(){
-        return new CustomTokenEnhancer();
+    public CustomTokenConverter customTokenConverter(){
+        return new CustomTokenConverter();
     }
 
-    @Bean
-    @Primary
-    public AuthorizationServerTokenServices tokenServices() {
-        DefaultTokenServices tokenServices = new DefaultTokenServices();
-
-        tokenServices.setTokenEnhancer(customTokenEnhancer());
-        return tokenServices;
-    }
 
     @Bean
     public AppClientServiceImpl appClientService(){
@@ -68,12 +60,9 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
 
-        TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
-        enhancerChain.setTokenEnhancers(List.of(customTokenEnhancer(),jwtAccessTokenConverter()));
-
         endpoints.authenticationManager(authenticationManager)
-//                .tokenStore(tokenStore())
-                .tokenEnhancer(customTokenEnhancer());
+                .tokenStore(tokenStore())
+                .tokenEnhancer(customTokenConverter());
 //                .accessTokenConverter(jwtAccessTokenConverter());
     }
 
