@@ -55,7 +55,7 @@ public class UserDataServiceImpl implements UserDataService {
 
         HttpEntity<MultiValueMap<String,String>> entity =new HttpEntity<>(headers);
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getForEntity("http://localhost:8080/oauth/authorize?scope=READ_WRITE&client_id=front-stm&response_type=code",null,entity);
+        restTemplate.getForEntity("http://localhost:8080/oauth/authorize?scope=READ_WRITE&client_id=front-stm&response_type=code",String.class,entity);
     }
 
 
