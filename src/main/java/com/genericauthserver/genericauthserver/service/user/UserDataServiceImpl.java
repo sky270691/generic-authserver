@@ -47,6 +47,7 @@ public class UserDataServiceImpl implements UserDataService {
         String authHeaderPrefix = "Basic ";
         String credential = Base64.getEncoder().encodeToString((username+":"+password).getBytes());
         String fullAuthHeader = authHeaderPrefix+credential;
+        System.out.println(fullAuthHeader);
         HttpHeaders headers = new HttpHeaders();
 //        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.set("Authorization",fullAuthHeader);
