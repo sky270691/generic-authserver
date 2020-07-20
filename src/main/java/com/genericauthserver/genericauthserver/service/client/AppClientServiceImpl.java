@@ -1,4 +1,4 @@
-package com.genericauthserver.genericauthserver.service;
+package com.genericauthserver.genericauthserver.service.client;
 
 import com.genericauthserver.genericauthserver.entity.Client;
 import com.genericauthserver.genericauthserver.repository.ClientRepository;

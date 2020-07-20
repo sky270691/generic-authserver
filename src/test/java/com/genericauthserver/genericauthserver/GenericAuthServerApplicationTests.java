@@ -1,13 +1,10 @@
 package com.genericauthserver.genericauthserver;
 
-import com.genericauthserver.genericauthserver.entity.User;
-import com.genericauthserver.genericauthserver.service.UserDataService;
-import com.genericauthserver.genericauthserver.service.UserDataServiceImpl;
+import com.genericauthserver.genericauthserver.service.user.UserDataService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import static org.junit.jupiter.api.Assertions.*;
 
