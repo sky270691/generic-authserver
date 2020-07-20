@@ -48,17 +48,14 @@ public class UserDataServiceImpl implements UserDataService {
         String credential = Base64.getEncoder().encodeToString((username+":"+password).getBytes());
         String fullAuthHeader = authHeaderPrefix+credential;
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.set("Authorization",fullAuthHeader);
 
-        MultiValueMap<String,String> body =new LinkedMultiValueMap<>();
-        body.add("scope","READ_WRITE");
-        body.add("client_id","front-stm");
-        body.add("response_type","code");
 
-        HttpEntity<MultiValueMap<String,String>> entity =new HttpEntity<>(body,headers);
+
+        HttpEntity<MultiValueMap<String,String>> entity =new HttpEntity<>(headers);
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getForEntity("http://localhost:8080/oauth/authorize",null,entity);
+        restTemplate.getForEntity("http://localhost:8080/oauth/authorize?scope=READ_WRITE&client_id=front-stm&response_type=code",null,entity);
     }
 
 
