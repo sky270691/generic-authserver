@@ -50,7 +50,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     public CustomTokenConverter customTokenConverter(){
         CustomTokenConverter converter = new CustomTokenConverter();
         converter.setSigningKey("54132");
-        return new CustomTokenConverter();
+        return converter;
     }
 
 
