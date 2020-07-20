@@ -30,15 +30,15 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Bean
     public TokenStore tokenStore(){
-        JwtTokenStore jwtTokenStore = new JwtTokenStore(jwtAccessTokenConverter());
+        JwtTokenStore jwtTokenStore = new JwtTokenStore(customTokenConverter());
         return jwtTokenStore;
     }
 
-    public JwtAccessTokenConverter jwtAccessTokenConverter(){
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey("54132");
-        return converter;
-    }
+//    public JwtAccessTokenConverter jwtAccessTokenConverter(){
+//        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+//        converter.setSigningKey("54132");
+//        return converter;
+//    }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
@@ -48,6 +48,8 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Bean
     public CustomTokenConverter customTokenConverter(){
+        CustomTokenConverter converter = new CustomTokenConverter();
+        converter.setSigningKey("54132");
         return new CustomTokenConverter();
     }
 
@@ -61,8 +63,8 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
 
         endpoints.authenticationManager(authenticationManager)
-                .tokenStore(tokenStore())
-                .tokenEnhancer(customTokenConverter());
+                .tokenStore(tokenStore());
+//                .tokenEnhancer(customTokenConverter());
 //                .accessTokenConverter(jwtAccessTokenConverter());
     }
 
