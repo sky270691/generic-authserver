@@ -10,21 +10,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthCodeServiceImpl implements AuthCodeService {
 
-    private final UserDataService userDataService;
     private final EmailClientService emailClientService;
 
     @Autowired
-    public AuthCodeServiceImpl(UserDataService userDataService,
-                               EmailClientService emailClientService) {
-        this.userDataService = userDataService;
+    public AuthCodeServiceImpl(EmailClientService emailClientService) {
         this.emailClientService = emailClientService;
     }
 
     @Override
     public void sendAuthCodeToEmail(String code) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userDataService.getUserByUsername(username);
-        String email = user.getEmail();
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
         String subject = "Kode login Satu Tas Merah";
         String message = "Kode otentikasi anda adalah:\n\n"+code;
 
