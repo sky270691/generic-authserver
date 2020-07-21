@@ -18,6 +18,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Optional;
@@ -99,6 +100,7 @@ public class UserDataServiceImpl implements UserDataService {
     }
 
     @Override
+    @Transactional
     public UserRegisterUpdateDto registerNewUser(UserRegisterUpdateDto dto) {
         UserMapper userMapper = new UserMapper();
         User user = userMapper.convertUserRegisterUpdateDtoToUserEntity(dto,passwordEncoder);
@@ -112,7 +114,7 @@ public class UserDataServiceImpl implements UserDataService {
         }
 
         UserRegisterUpdateDto registeredUser =  userMapper.convertToUserRegisterUpdateDto(userRepository.save(user));
-        HttpEntity<UserRegisterUpdateDto> entity = new HttpEntity<>(registeredUser);
+        HttpEntity<UserRegisterUpdateDto> entity = new HttpEntity<>(registeredUser,null);
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://backend:8080/api/v1/register";
         restTemplate.exchange(url,HttpMethod.POST,entity,String.class);
