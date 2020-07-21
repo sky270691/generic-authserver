@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 
 public class UserRegisterUpdateDto {
 
@@ -21,6 +22,9 @@ public class UserRegisterUpdateDto {
 
     @JsonProperty("last_name")
     private String lastName;
+
+    @JsonProperty("date_of_birth")
+    private LocalDate dateOfBirth;
 
     @JsonProperty("phone_number")
     @Pattern(regexp = "^08[\\d+]{10,15}")
@@ -76,5 +80,13 @@ public class UserRegisterUpdateDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 }

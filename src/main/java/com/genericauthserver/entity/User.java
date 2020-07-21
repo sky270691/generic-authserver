@@ -28,7 +28,7 @@ public class User {
 
     private String email;
 
-    @Column(name = "dafe_of_birth")
+    @Column(name = "date_of_birth")
     private LocalDate DateOfBirth;
 
     @CreationTimestamp
@@ -116,5 +116,13 @@ public class User {
 
     public void setLastModified(LocalDateTime lastModified) {
         this.lastModified = lastModified;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return DateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        DateOfBirth = dateOfBirth;
     }
 }
