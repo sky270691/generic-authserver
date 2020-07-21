@@ -3,5 +3,6 @@ USER root
 COPY . /app/authserver
 WORKDIR /app/authserver
 RUN chmod +x ./mvnw
+RUN apk add --no-cache tzdata
 ENTRYPOINT ["./mvnw"]
 CMD ["spring-boot:run"]
