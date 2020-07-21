@@ -20,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.Optional;
 
 @Service
 public class UserDataServiceImpl implements UserDataService {
@@ -101,8 +102,13 @@ public class UserDataServiceImpl implements UserDataService {
     public UserRegisterUpdateDto registerNewUser(UserRegisterUpdateDto dto) {
         UserMapper userMapper = new UserMapper();
         User user = userMapper.convertUserRegisterUpdateDtoToUserEntity(dto,passwordEncoder);
-        UserRegisterUpdateDto registeredUser =  userMapper.convertToUserRegisterUpdateDto(userRepository.save(user));
-        return registeredUser;
+        Optional<User> existingUser =  userRepository.findByEmail(dto.getEmail());
+        if(existingUser.isEmpty()){
+            UserRegisterUpdateDto registeredUser =  userMapper.convertToUserRegisterUpdateDto(userRepository.save(user));
+            return registeredUser;
+        }else{
+            throw new UserException("User with email '"+dto.getEmail()+"' already exist");
+        }
     }
 
 
