@@ -24,7 +24,9 @@ public class UserMapper {
 
     public UserRegisterUpdateDto convertToUserRegisterUpdateDto(User user){
         UserRegisterUpdateDto dto = new UserRegisterUpdateDto();
+
         dto.setEmail(user.getEmail());
+        dto.setDateOfBirth(user.getDateOfBirth());
         dto.setFirstName(user.getFirstName());
         dto.setId(user.getId());
         dto.setLastName(user.getLastName());
