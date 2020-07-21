@@ -11,6 +11,7 @@ import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.jwt.JwtHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -80,6 +81,7 @@ public class UserDataServiceImpl implements UserDataService {
         String url = "http://localhost:8080/oauth/token";
 
         ResponseEntity<String> response = restTemplate.postForEntity(url,entity,String.class);
+
 
         ObjectMapper mapper = new ObjectMapper();
         try {

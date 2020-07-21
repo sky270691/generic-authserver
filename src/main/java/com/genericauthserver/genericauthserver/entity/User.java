@@ -1,5 +1,8 @@
 package com.genericauthserver.genericauthserver.entity;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -23,6 +26,10 @@ public class User {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    private String kelurahan;
+
+    private String kecamatan;
+
     private String email;
 
     private String city;
@@ -30,6 +37,17 @@ public class User {
     private String province;
 
     private String address;
+
+    @Column(name = "home_location")
+    private String homeLocation;
+
+    @CreationTimestamp
+    @Column(name = "created_date")
+    private String createdDate;
+
+    @UpdateTimestamp
+    @Column(name = "last_modified")
+    private String lastModified;
 
     @ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinTable(name = "user_authority",
