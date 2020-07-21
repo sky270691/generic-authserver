@@ -7,6 +7,7 @@ services:
       dockerfile: Dockerfile-auth
     ports:
       - 81:8080
+      - 5004:5005
     volumes:
       - type: volume
         source: maven-repo
@@ -30,6 +31,7 @@ services:
       dockerfile: /apps/satutasmerah/backend-marketplace-stm/Dockerfile-backend
     ports:
       - 80:8080
+      - 5005:5005
     volumes:
       - type: volume
         source: maven-repo
