@@ -20,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Base64;
 import java.util.Optional;
 
@@ -116,10 +117,10 @@ public class UserDataServiceImpl implements UserDataService {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
 
-        UserRegisterUpdateDto registeredUser =  userMapper.convertToUserRegisterUpdateDto(userRepository.save(user));
-        HttpEntity<UserRegisterUpdateDto> entity = new HttpEntity<>(registeredUser,headers);
-        RestTemplate restTemplate = new RestTemplate();
         String url = "http://backend:8080/api/v1/register";
+        UserRegisterUpdateDto registeredUser =  userMapper.convertToUserRegisterUpdateDto(userRepository.save(user));
+        RequestEntity<UserRegisterUpdateDto> entity = new RequestEntity<>(registeredUser,headers,HttpMethod.POST, URI.create(url));
+        RestTemplate restTemplate = new RestTemplate();
         restTemplate.exchange(url,HttpMethod.POST,entity,String.class);
 
         return registeredUser;
