@@ -114,7 +114,7 @@ public class UserDataServiceImpl implements UserDataService {
         UserRegisterUpdateDto registeredUser =  userMapper.convertToUserRegisterUpdateDto(userRepository.save(user));
         HttpEntity<UserRegisterUpdateDto> entity = new HttpEntity<>(registeredUser);
         RestTemplate restTemplate = new RestTemplate();
-        String url = "http://backend/api/v1/register";
+        String url = "http://backend:8080/api/v1/register";
         restTemplate.exchange(url,HttpMethod.POST,entity,String.class);
 
         return registeredUser;
