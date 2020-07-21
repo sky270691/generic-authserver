@@ -69,7 +69,7 @@ public class UserController {
         Map<String,Object> response = new LinkedHashMap<>();
         UserRegisterUpdateDto returnedUserData = userDataService.registerNewUser(userRegisterUpdateDto);
         response.put("status","success");
-        response.put("registered-user",userRegisterUpdateDto);
+        response.put("registered-user",returnedUserData);
 
         return ResponseEntity.ok(response);
     }

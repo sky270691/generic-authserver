@@ -3,6 +3,9 @@ USER root
 COPY . /app/authserver
 WORKDIR /app/authserver
 RUN chmod +x ./mvnw
+
+#install tzdata to modify linux alpine container timezone
 RUN apk add --no-cache tzdata
+
 ENTRYPOINT ["./mvnw"]
 CMD ["spring-boot:run"]

@@ -2,7 +2,8 @@ FROM openjdk:13-alpine
 USER root
 COPY . /app/backend-stm
 WORKDIR /app/backend-stm
-RUN apk add --no-cache tzdata
 RUN chmod +x ./mvnw
+#install tzdata to modify linux alpine container timezone
+RUN apk add --no-cache tzdata
 ENTRYPOINT ["./mvnw"]
 CMD ["spring-boot:run"]

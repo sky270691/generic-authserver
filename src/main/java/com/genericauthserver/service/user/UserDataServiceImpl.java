@@ -102,13 +102,22 @@ public class UserDataServiceImpl implements UserDataService {
     public UserRegisterUpdateDto registerNewUser(UserRegisterUpdateDto dto) {
         UserMapper userMapper = new UserMapper();
         User user = userMapper.convertUserRegisterUpdateDtoToUserEntity(dto,passwordEncoder);
-        Optional<User> existingUser =  userRepository.findByEmail(dto.getEmail());
-        if(existingUser.isEmpty()){
-            UserRegisterUpdateDto registeredUser =  userMapper.convertToUserRegisterUpdateDto(userRepository.save(user));
-            return registeredUser;
-        }else{
+        Optional<User> existingUserEmail = userRepository.findByEmail(dto.getEmail());
+        Optional<User> existingUserPhone = userRepository.findByPhoneNumber(dto.getPhoneNumber());
+
+        if(!existingUserEmail.isEmpty()){
             throw new UserException("User with email '"+dto.getEmail()+"' already exist");
+        }else if(!existingUserPhone.isEmpty()){
+            throw new UserException("User with phone number '"+dto.getPhoneNumber()+"' already exist");
         }
+
+        UserRegisterUpdateDto registeredUser =  userMapper.convertToUserRegisterUpdateDto(userRepository.save(user));
+        HttpEntity<UserRegisterUpdateDto> entity = new HttpEntity<>(registeredUser);
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "http://backend/api/v1/register";
+        restTemplate.exchange(url,HttpMethod.POST,entity,String.class);
+
+        return registeredUser;
     }
 
 
