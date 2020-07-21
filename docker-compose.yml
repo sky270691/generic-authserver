@@ -53,8 +53,7 @@ services:
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=sky-high
-      - TZ=GMT+8
-      - PGTZ=GMT+8
+      - TZ=Asia/Singapore
 
   database-backend:
     image: postgres:12-alpine
@@ -67,8 +66,7 @@ services:
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=sky-high
-      - TZ=GMT+8
-      - PGTZ=GMT+8
+      - TZ=Asia/Singapore
 
 volumes:
   maven-repo:
