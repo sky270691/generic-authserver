@@ -113,15 +113,12 @@ public class UserDataServiceImpl implements UserDataService {
         }else if(!existingUserPhone.isEmpty()){
             throw new UserException("User with phone number '"+dto.getPhoneNumber()+"' already exist");
         }
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
 
 
         String url = "http://backend:8080/api/v1/register";
         UserRegisterUpdateDto registeredUser =  userMapper.convertToUserRegisterUpdateDto(userRepository.save(user));
-        RequestEntity<UserRegisterUpdateDto> entity = new RequestEntity<>(registeredUser,headers,HttpMethod.POST, URI.create(url));
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.exchange(url,HttpMethod.POST,entity,String.class);
+        restTemplate.postForEntity(url,registeredUser,String.class);
 
         return registeredUser;
     }
