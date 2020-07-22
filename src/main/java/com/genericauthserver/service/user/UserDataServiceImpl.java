@@ -1,11 +1,13 @@
 package com.genericauthserver.service.user;
 
 import com.genericauthserver.dto.UserRegisterUpdateDto;
+import com.genericauthserver.entity.Authority;
 import com.genericauthserver.entity.User;
 import com.genericauthserver.exception.UserException;
 import com.genericauthserver.mapper.UserMapper;
 import com.genericauthserver.repository.UserRepository;
 import com.genericauthserver.config.security.SecurityUser;
+import com.genericauthserver.service.authority.AuthorityService;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,9 @@ import org.springframework.web.client.RestTemplate;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,12 +33,15 @@ public class UserDataServiceImpl implements UserDataService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthorityService authorityService;
 
     @Autowired
     public UserDataServiceImpl(UserRepository userRepository,
-                               PasswordEncoder passwordEncoder) {
+                               PasswordEncoder passwordEncoder,
+                               AuthorityService authorityService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.authorityService = authorityService;
     }
 
 
@@ -107,6 +114,10 @@ public class UserDataServiceImpl implements UserDataService {
         User user = userMapper.convertUserRegisterUpdateDtoToUserEntity(dto,passwordEncoder);
         Optional<User> existingUserEmail = userRepository.findByEmail(dto.getEmail());
         Optional<User> existingUserPhone = userRepository.findByPhoneNumber(dto.getPhoneNumber());
+
+        //default authority is ROLE_USER
+        Authority authority = authorityService.findAuthorityById(2);
+        user.getAuthorityList().add(authority);
 
         if(!existingUserEmail.isEmpty()){
             throw new UserException("User with email '"+dto.getEmail()+"' already exist");
