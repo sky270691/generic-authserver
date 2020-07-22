@@ -114,11 +114,9 @@ public class UserDataServiceImpl implements UserDataService {
         User user = userMapper.convertUserRegisterUpdateDtoToUserEntity(dto,passwordEncoder);
         Optional<User> existingUserEmail = userRepository.findByEmail(dto.getEmail());
         Optional<User> existingUserPhone = userRepository.findByPhoneNumber(dto.getPhoneNumber());
-
-        //default authority is ROLE_USER
+        user.setAuthorityList(new ArrayList<>());
         Authority authority = authorityService.findAuthorityById(2);
         user.getAuthorityList().add(authority);
-
         if(!existingUserEmail.isEmpty()){
             throw new UserException("User with email '"+dto.getEmail()+"' already exist");
         }else if(!existingUserPhone.isEmpty()){
