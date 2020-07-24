@@ -1,12 +1,14 @@
 package com.genericauthserver.service.user;
 
 import com.genericauthserver.dto.UserRegisterUpdateDto;
+import com.genericauthserver.dto.UserResetPasswordDto;
 import com.genericauthserver.entity.Authority;
 import com.genericauthserver.entity.User;
 import com.genericauthserver.exception.UserException;
 import com.genericauthserver.mapper.UserMapper;
 import com.genericauthserver.repository.UserRepository;
 import com.genericauthserver.config.security.SecurityUser;
+import com.genericauthserver.service.authcode.AuthCodeService;
 import com.genericauthserver.service.authority.AuthorityService;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -14,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,10 +28,8 @@ import org.springframework.web.client.RestTemplate;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
+import java.security.SecureRandom;
+import java.util.*;
 
 @Service
 public class UserDataServiceImpl implements UserDataService {
@@ -37,15 +38,19 @@ public class UserDataServiceImpl implements UserDataService {
     private final PasswordEncoder passwordEncoder;
     private final AuthorityService authorityService;
     private final Logger logger;
+    private final AuthCodeService authCodeService;
+    private static final Map<String,User> USER_TEMP_CODE_PAIR = new HashMap<>();
 
     @Autowired
     public UserDataServiceImpl(UserRepository userRepository,
                                PasswordEncoder passwordEncoder,
-                               AuthorityService authorityService) {
+                               AuthorityService authorityService,
+                               AuthCodeService authCodeService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityService = authorityService;
         this.logger = LoggerFactory.getLogger(this.getClass());
+        this.authCodeService = authCodeService;
     }
 
 
@@ -57,8 +62,8 @@ public class UserDataServiceImpl implements UserDataService {
 
 
     @Override
-    public User getUserByEmail(String username) {
-        return userRepository.findByEmail(username).orElseThrow(()->new UserException("User with email: '"+username+"' not found"));
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(()->new UserException("User with email: '"+email+"' not found"));
     }
 
     @Override
@@ -138,5 +143,87 @@ public class UserDataServiceImpl implements UserDataService {
         return registeredUser;
     }
 
+    private String generateAlphaNumeric(int stringLength){
+        String alphaLower = "abcdefghijklmnopqrstuvwxyz";
+//        String alphaUpper = alphaLower.toUpperCase();
+        String number = "0123456789";
+
+        String combination = alphaLower + number;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < stringLength; i++) {
+            Random random = new SecureRandom();
+            sb.append(combination.charAt(random.nextInt(combination.length())));
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public void sendResetPasswordCodeToEmail(String email) {
+        User user = getUserByEmail(email);
+        if (USER_TEMP_CODE_PAIR.containsValue(user)) {
+            for (Map.Entry<String, User> stringUserEntry : USER_TEMP_CODE_PAIR.entrySet()) {
+                if(stringUserEntry.getValue().equals(user)){
+                    USER_TEMP_CODE_PAIR.remove(stringUserEntry.getKey());
+                }
+            }
+        }
+        String uniqueCode = generateAlphaNumeric(6);
+        StringBuilder emailMessage = new StringBuilder();
+        emailMessage.append("Halo "+user.getFirstName()+" "+user.getLastName()+", silahkan input kode ini di aplikasi Satu Tas Merah\n");
+        USER_TEMP_CODE_PAIR.put(uniqueCode,user);
+        emailMessage.append(uniqueCode);
+        emailMessage.append("\n\n\n");
+        emailMessage.append("--- SATU TAS MERAH ---");
+        authCodeService.sendResetPasswordCodeToEmail(uniqueCode,email);
+    }
+
+    @Override
+    public Optional<UserRegisterUpdateDto> validateResetPasswordCode(String code) {
+
+        UserMapper userMapper = new UserMapper();
+        for (Map.Entry<String, User> stringUserEntry : USER_TEMP_CODE_PAIR.entrySet()) {
+            if(code.equalsIgnoreCase(stringUserEntry.getKey())){
+                User user = USER_TEMP_CODE_PAIR.get(code);
+                return Optional.of(userMapper.convertToUserRegisterUpdateDto(user));
+            }
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public void updateUserData(UserRegisterUpdateDto userRegisterUpdateDto){
+        UserMapper userMapper = new UserMapper();
+        User user = userMapper.convertUserRegisterUpdateDtoToUserEntity(userRegisterUpdateDto,passwordEncoder);
+        userRepository.save(user);
+    }
+
+
+    @Override
+    public boolean updatePassword(UserResetPasswordDto userResetPasswordDto, String codeHeader) {
+        UserMapper userMapper = new UserMapper();
+        if(codeHeader!=null && USER_TEMP_CODE_PAIR.containsKey(codeHeader)){
+            User user;
+            try {
+                user = getUserByEmail(userResetPasswordDto.getEmail());
+            } catch (NullPointerException e) {
+                throw new UserException("User is not exist");
+            }
+            UserRegisterUpdateDto userRegisterDto = userMapper.convertToUserRegisterUpdateDto(user);
+            userRegisterDto.setPassword(userResetPasswordDto.getPassword());
+            updateUserData(userRegisterDto);
+        }else{
+            throw new UserException("Error Occured");
+        }
+        return true;
+    }
+
+
+    //delete the temp code on 23:59 everyday
+    @Scheduled(cron = "0 59 23 * * ?")
+    protected void deleteTempCode(){
+        if(!USER_TEMP_CODE_PAIR.entrySet().isEmpty()){
+            USER_TEMP_CODE_PAIR.clear();
+        }
+    }
 
 }

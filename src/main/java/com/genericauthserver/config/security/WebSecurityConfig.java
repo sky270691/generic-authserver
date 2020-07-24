@@ -7,6 +7,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -33,8 +37,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic().and().csrf().disable();
         http.authorizeRequests()
         .mvcMatchers("/api/v1/login").permitAll()
-        .mvcMatchers("api/v1/register").permitAll();
+        .mvcMatchers("/api/v1/register").permitAll();
 
         http.authorizeRequests().mvcMatchers("/mycode").authenticated();
+
+        http.cors(corsConfigurer ->{
+            CorsConfigurationSource corsConfigurationSource = request -> {
+                CorsConfiguration corsConfiguration = new CorsConfiguration();
+                corsConfiguration.setAllowedOrigins(Arrays.asList("*"));
+                corsConfiguration.setAllowedMethods(Arrays.asList("POST","GET","PUT","DELETE"));
+                corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization","Content-Type","Voucher","Content-Disposition","X-Code"));
+
+                return corsConfiguration;
+            };
+            corsConfigurer.configurationSource(corsConfigurationSource);
+        });
     }
 }

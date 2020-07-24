@@ -62,12 +62,12 @@ public class SecurityClient implements ClientDetails {
 
     @Override
     public Integer getAccessTokenValiditySeconds() {
-        return 50000;
+        return 1296000;
     }
 
     @Override
     public Integer getRefreshTokenValiditySeconds() {
-        return 50000;
+        return 1296000;
     }
 
     @Override

@@ -21,7 +21,15 @@ public class AuthCodeServiceImpl implements AuthCodeService {
     public void sendAuthCodeToEmail(String code) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         String subject = "Kode login Satu Tas Merah";
-        String message = "Kode otentikasi anda adalah:\n\n"+code;
+        String message = "Kode otentikasi anda adalah:\n\n\n"+code+"\n\n\n- Satu Tas Merah -";
+
+        emailClientService.sendSimpleEmail(email,subject,message);
+    }
+
+    @Override
+    public void sendResetPasswordCodeToEmail(String code, String email) {
+        String subject = "Kode Reset Password Satu Tas Merah";
+        String message = "Silahkan input kode berikut di aplikasi Satu Tas Merah: \n\n\n"+code+"\n\n\n- Satu Tas Merah -";
 
         emailClientService.sendSimpleEmail(email,subject,message);
     }

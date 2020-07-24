@@ -1,18 +1,22 @@
 package com.genericauthserver.controller;
 
 import com.genericauthserver.dto.UserRegisterUpdateDto;
+import com.genericauthserver.dto.UserResetPasswordDto;
 import com.genericauthserver.service.user.UserDataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -60,7 +64,6 @@ public class UserController {
             tokenResponse.put("message","error getting token");
             return ResponseEntity.badRequest().body(tokenResponse);
         }
-
     }
 
     @PostMapping("/register")
@@ -72,6 +75,46 @@ public class UserController {
         response.put("registered-user",returnedUserData);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(value = "/reset-password/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String,String>> requestResetPasswordCode(@PathVariable @Email(regexp =
+            "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{1,}$",
+            message = "email harus menggunakan format yang benar") String email){
+
+        Map<String,String> returnValue = new HashMap<>();
+        userDataService.sendResetPasswordCodeToEmail(email);
+        returnValue.put("status","success");
+        return ResponseEntity.ok(returnValue);
+    }
+
+    @GetMapping("/reset-password/{code}")
+    public ResponseEntity<?> validateResetCode(@PathVariable String code){
+        Optional<UserRegisterUpdateDto> user = userDataService.validateResetPasswordCode(code);
+        Map<String,String> returnBody = new HashMap<>();
+        if(user.isPresent()){
+            returnBody.put("status","success");
+            return ResponseEntity.ok(returnBody);
+        }else{
+            returnBody.put("status","failed");
+            return ResponseEntity.badRequest().body(returnBody);
+        }
+    }
+
+    @PutMapping("/update-password")
+    public ResponseEntity<?> updatePassword(@RequestBody UserResetPasswordDto emailPassword, @RequestHeader("X-Code") String code){
+        logger.info("user with email: '"+emailPassword.getEmail()+"' tried to update password");
+        Map<String, String> responseBody = new HashMap<>();
+        boolean updatePasswordStatus = userDataService.updatePassword(emailPassword,code);
+        System.out.println(emailPassword);
+        logger.info("success reset password for user with email:'"+emailPassword.getEmail()+"'");
+        if(updatePasswordStatus){
+            responseBody.put("status","success");
+            return ResponseEntity.ok(responseBody);
+        }else {
+            responseBody.put("status","error");
+            return ResponseEntity.badRequest().body(responseBody);
+        }
     }
 
 }
