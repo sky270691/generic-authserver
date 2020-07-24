@@ -23,6 +23,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
@@ -80,11 +82,12 @@ public class UserDataServiceImpl implements UserDataService {
         HttpEntity entity = new HttpEntity(headers);
 
         RestTemplate restTemplate = new RestTemplate();
-        HttpStatus status = restTemplate.exchange(url, HttpMethod.GET,entity,String.class,null,null).getStatusCode();
-        if(status.is4xxClientError()){
+
+        try {
+            restTemplate.exchange(url, HttpMethod.GET,entity,String.class,null,null).getStatusCode();
+        } catch (RestClientException e) {
             throw new UserException("email dan/atau password salah");
         }
-
     }
 
     @Override
