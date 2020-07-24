@@ -80,7 +80,11 @@ public class UserDataServiceImpl implements UserDataService {
         HttpEntity entity = new HttpEntity(headers);
 
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.exchange(url, HttpMethod.GET,entity,String.class,null,null);
+        HttpStatus status = restTemplate.exchange(url, HttpMethod.GET,entity,String.class,null,null).getStatusCode();
+        if(status.is4xxClientError()){
+            throw new UserException("email dan/atau password salah");
+        }
+
     }
 
     @Override

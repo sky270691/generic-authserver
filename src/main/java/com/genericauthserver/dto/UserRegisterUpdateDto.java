@@ -18,13 +18,14 @@ public class UserRegisterUpdateDto {
     private String password;
 
     @JsonProperty("first_name")
-    @NotBlank
+    @NotBlank(message = "nama depan tidak boleh kosong")
     private String firstName;
 
     @JsonProperty("last_name")
     private String lastName;
 
     @Pattern(regexp = "(MALE)|(FEMALE)")
+    @NotBlank(message = "jenis kelamin tidak boleh kosong")
     private String sex;
 
     @JsonProperty("date_of_birth")
