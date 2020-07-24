@@ -30,6 +30,7 @@ public class UserMapper {
         dto.setDateOfBirth(user.getDateOfBirth());
         dto.setFirstName(user.getFirstName());
         dto.setId(user.getId());
+        dto.setSex(user.getSex());
         dto.setLastName(user.getLastName());
         dto.setPhoneNumber(user.getPhoneNumber());
         return dto;
