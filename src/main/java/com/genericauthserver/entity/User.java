@@ -127,4 +127,12 @@ public class User {
     public void setDateOfBirth(LocalDate dateOfBirth) {
         DateOfBirth = dateOfBirth;
     }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
 }
