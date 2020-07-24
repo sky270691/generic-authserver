@@ -23,6 +23,9 @@ public class UserRegisterUpdateDto {
     @JsonProperty("last_name")
     private String lastName;
 
+    @Pattern(regexp = "(MALE)|(FEMALE)")
+    private String sex;
+
     @JsonProperty("date_of_birth")
     private LocalDate dateOfBirth;
 
@@ -84,6 +87,14 @@ public class UserRegisterUpdateDto {
 
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
     public void setDateOfBirth(LocalDate dateOfBirth) {

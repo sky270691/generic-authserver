@@ -28,6 +28,8 @@ public class User {
 
     private String email;
 
+    private String sex;
+
     @Column(name = "date_of_birth")
     private LocalDate DateOfBirth;
 

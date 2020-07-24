@@ -10,6 +10,8 @@ import com.genericauthserver.config.security.SecurityUser;
 import com.genericauthserver.service.authority.AuthorityService;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,6 +36,7 @@ public class UserDataServiceImpl implements UserDataService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthorityService authorityService;
+    private final Logger logger;
 
     @Autowired
     public UserDataServiceImpl(UserRepository userRepository,
@@ -42,6 +45,7 @@ public class UserDataServiceImpl implements UserDataService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityService = authorityService;
+        this.logger = LoggerFactory.getLogger(this.getClass());
     }
 
 
@@ -117,6 +121,7 @@ public class UserDataServiceImpl implements UserDataService {
         user.setAuthorityList(new ArrayList<>());
         Authority authority = authorityService.findAuthorityById(2);
         user.getAuthorityList().add(authority);
+
         if(!existingUserEmail.isEmpty()){
             throw new UserException("User with email '"+dto.getEmail()+"' already exist");
         }else if(!existingUserPhone.isEmpty()){
