@@ -31,7 +31,7 @@ public class UserRegisterUpdateDto {
     private LocalDate dateOfBirth;
 
     @JsonProperty("phone_number")
-    @Pattern(regexp = "^08[\\d+]{10,15}")
+    @Pattern(regexp = "^08[\\d+]{7,13}",message = "Nomor HP tidak valid, contoh:'08123456789101'")
     private String phoneNumber;
 
     @Pattern(regexp = "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{1,}$", message = "email format should be valid")
