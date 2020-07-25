@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface UserDataService extends UserDetailsService{
 
-    User getUserByEmail(String username);
+    User findUserByEmail(String username);
     void login(String username, String password);
     String getJwtToken(String authCode);
     UserRegisterUpdateDto registerNewUser(UserRegisterUpdateDto dto);

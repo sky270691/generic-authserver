@@ -15,23 +15,26 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.net.URI;
 import java.security.SecureRandom;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserDataServiceImpl implements UserDataService {
@@ -41,16 +44,20 @@ public class UserDataServiceImpl implements UserDataService {
     private final AuthorityService authorityService;
     private final Logger logger;
     private final AuthCodeService authCodeService;
+    private final String resourceServerBackendRegistrationUrl;
     private static final Map<String,User> USER_TEMP_CODE_PAIR = new HashMap<>();
 
     @Autowired
     public UserDataServiceImpl(UserRepository userRepository,
                                PasswordEncoder passwordEncoder,
                                AuthorityService authorityService,
-                               AuthCodeService authCodeService) {
+                               AuthCodeService authCodeService,
+                               @Value("${resource-server.register-endpoint.url}")
+                               String resourceServerBackendRegistrationUrl) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityService = authorityService;
+        this.resourceServerBackendRegistrationUrl = resourceServerBackendRegistrationUrl;
         this.logger = LoggerFactory.getLogger(this.getClass());
         this.authCodeService = authCodeService;
     }
@@ -58,13 +65,13 @@ public class UserDataServiceImpl implements UserDataService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = getUserByEmail(s);
+        User user = findUserByEmail(s);
         return new SecurityUser(user);
     }
 
 
     @Override
-    public User getUserByEmail(String email) {
+    public User findUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(()->new UserException("User with email: '"+email+"' not found"));
     }
 
@@ -79,12 +86,12 @@ public class UserDataServiceImpl implements UserDataService {
         headers.set("Authorization",fullAuthHeader);
         String url = "http://localhost:8080/oauth/authorize?scope=READ_WRITE&client_id=front-stm&response_type=code";
 
-        HttpEntity entity = new HttpEntity(headers);
+        HttpEntity<?> entity = new HttpEntity<>(headers);
 
         RestTemplate restTemplate = new RestTemplate();
 
         try {
-            restTemplate.exchange(url, HttpMethod.GET,entity,String.class,null,null).getStatusCode();
+            restTemplate.exchange(url, HttpMethod.GET,entity,String.class,null,null);
         } catch (RestClientException e) {
             throw new UserException("email dan/atau password salah");
         }
@@ -141,11 +148,10 @@ public class UserDataServiceImpl implements UserDataService {
         }
 
 
-        String url = "http://backend:8080/api/v1/users/register";
         UserRegisterUpdateDto registeredUser =  userMapper.convertToUserRegisterUpdateDto(userRepository.save(user));
         HttpEntity<UserRegisterUpdateDto> entity = new HttpEntity<>(registeredUser);
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.exchange(url, HttpMethod.POST,entity,String.class);
+        restTemplate.exchange(resourceServerBackendRegistrationUrl, HttpMethod.POST,entity,String.class);
 
         return registeredUser;
     }
@@ -166,7 +172,7 @@ public class UserDataServiceImpl implements UserDataService {
 
     @Override
     public void sendResetPasswordCodeToEmail(String email) {
-        User user = getUserByEmail(email);
+        User user = findUserByEmail(email);
         if (USER_TEMP_CODE_PAIR.containsValue(user)) {
             for (Map.Entry<String, User> stringUserEntry : USER_TEMP_CODE_PAIR.entrySet()) {
                 if(stringUserEntry.getValue().equals(user)){
@@ -211,7 +217,7 @@ public class UserDataServiceImpl implements UserDataService {
         if(codeHeader!=null && USER_TEMP_CODE_PAIR.containsKey(codeHeader)){
             User user;
             try {
-                user = getUserByEmail(userResetPasswordDto.getEmail());
+                user = findUserByEmail(userResetPasswordDto.getEmail());
             } catch (NullPointerException e) {
                 throw new UserException("User is not exist");
             }
