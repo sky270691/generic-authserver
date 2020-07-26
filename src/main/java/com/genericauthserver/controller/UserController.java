@@ -123,7 +123,7 @@ public class UserController {
             return ResponseEntity.badRequest().build();
         }
 
-        UserRegisterUpdateDto dto = userDataService.updateUserRole(userId,authorityList);
+        UserRegisterUpdateDto dto = userDataService.updateUserAuthority(userId,authorityList);
         returnBody.put("status","success");
         returnBody.put("updated_user_authority",dto);
         return ResponseEntity.ok(returnBody);
