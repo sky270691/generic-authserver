@@ -116,8 +116,14 @@ public class UserController {
 
     @PutMapping("/edit-user-authority/{id}")
     public ResponseEntity<?> editUserAuthority(@PathVariable("id") long userId, @RequestBody Map<String, List<Integer>> authorityList){
-        UserRegisterUpdateDto dto = userDataService.updateUserRole(userId,authorityList);
         Map<String,Object> returnBody = new LinkedHashMap<>();
+
+        if (authorityList.entrySet().size()>1 || !authorityList.containsKey("role_id_list")) {
+            returnBody.put("status","bad request");
+            return ResponseEntity.badRequest().build();
+        }
+
+        UserRegisterUpdateDto dto = userDataService.updateUserRole(userId,authorityList);
         returnBody.put("status","success");
         returnBody.put("updated_user_authority",dto);
         return ResponseEntity.ok(returnBody);

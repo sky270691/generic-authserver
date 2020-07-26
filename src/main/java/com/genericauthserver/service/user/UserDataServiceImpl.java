@@ -229,7 +229,8 @@ public class UserDataServiceImpl implements UserDataService {
     }
 
     @Override
-    public UserRegisterUpdateDto updateUserRole(long userId, Map<String, List<Integer>> authorityList) {
+    @Transactional
+    public UserRegisterUpdateDto updateUserAuthority(long userId, Map<String, List<Integer>> authorityList) {
 
         User user = findById(userId);
         List<Authority> findAddedAuthority = authorityList.values()
@@ -239,6 +240,17 @@ public class UserDataServiceImpl implements UserDataService {
                 .collect(Collectors.toList());
         user.setAuthorityList(findAddedAuthority);
         User savedUser = userRepository.save(user);
+
+        if(savedUser.getAuthorityList().stream().anyMatch(x->x.getId()==4)){
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Server-Data","true");
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+
+            RestTemplate restTemplate = new RestTemplate();
+            String url = "http://backend:8080/api/v1/users/activate-seller/"+savedUser.getId();
+            restTemplate.exchange(url,HttpMethod.PUT,entity,String.class);
+        }
 
         UserRegisterUpdateDto dto = userMapper.convertToUserRegisterUpdateDto(savedUser);
         return dto;
