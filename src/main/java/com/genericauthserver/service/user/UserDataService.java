@@ -5,6 +5,8 @@ import com.genericauthserver.dto.UserResetPasswordDto;
 import com.genericauthserver.entity.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface UserDataService extends UserDetailsService{
@@ -17,4 +19,6 @@ public interface UserDataService extends UserDetailsService{
     Optional<UserRegisterUpdateDto> validateResetPasswordCode(String code);
     void updateUserData(UserRegisterUpdateDto userRegisterUpdateDto);
     boolean updatePassword(UserResetPasswordDto userResetPasswordDto, String code);
+    UserRegisterUpdateDto updateUserRole(long userId, Map<String, List<Integer>> authorityList);
+    User findById(long id);
 }

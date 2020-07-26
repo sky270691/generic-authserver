@@ -18,9 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,6 +42,7 @@ public class UserDataServiceImpl implements UserDataService {
     private final Logger logger;
     private final AuthCodeService authCodeService;
     private final String resourceServerBackendRegistrationUrl;
+    private final UserMapper userMapper;
     private static final Map<String,User> USER_TEMP_CODE_PAIR = new HashMap<>();
 
     @Autowired
@@ -53,11 +51,13 @@ public class UserDataServiceImpl implements UserDataService {
                                AuthorityService authorityService,
                                AuthCodeService authCodeService,
                                @Value("${resource-server.register-endpoint.url}")
-                               String resourceServerBackendRegistrationUrl) {
+                                       String resourceServerBackendRegistrationUrl,
+                               UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityService = authorityService;
         this.resourceServerBackendRegistrationUrl = resourceServerBackendRegistrationUrl;
+        this.userMapper = userMapper;
         this.logger = LoggerFactory.getLogger(this.getClass());
         this.authCodeService = authCodeService;
     }
@@ -74,6 +74,8 @@ public class UserDataServiceImpl implements UserDataService {
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(()->new UserException("User with email: '"+email+"' not found"));
     }
+
+
 
     @Override
     public void login(String email, String password){
@@ -133,7 +135,6 @@ public class UserDataServiceImpl implements UserDataService {
     @Override
     @Transactional
     public UserRegisterUpdateDto registerNewUser(UserRegisterUpdateDto dto) {
-        UserMapper userMapper = new UserMapper();
         User user = userMapper.convertUserRegisterUpdateDtoToUserEntity(dto,passwordEncoder);
         Optional<User> existingUserEmail = userRepository.findByEmail(dto.getEmail());
         Optional<User> existingUserPhone = userRepository.findByPhoneNumber(dto.getPhoneNumber());
@@ -193,7 +194,6 @@ public class UserDataServiceImpl implements UserDataService {
     @Override
     public Optional<UserRegisterUpdateDto> validateResetPasswordCode(String code) {
 
-        UserMapper userMapper = new UserMapper();
         for (Map.Entry<String, User> stringUserEntry : USER_TEMP_CODE_PAIR.entrySet()) {
             if(code.equalsIgnoreCase(stringUserEntry.getKey())){
                 User user = USER_TEMP_CODE_PAIR.get(code);
@@ -205,7 +205,6 @@ public class UserDataServiceImpl implements UserDataService {
 
     @Override
     public void updateUserData(UserRegisterUpdateDto userRegisterUpdateDto){
-        UserMapper userMapper = new UserMapper();
         User user = userMapper.convertUserRegisterUpdateDtoToUserEntity(userRegisterUpdateDto,passwordEncoder);
         userRepository.save(user);
     }
@@ -213,7 +212,6 @@ public class UserDataServiceImpl implements UserDataService {
 
     @Override
     public boolean updatePassword(UserResetPasswordDto userResetPasswordDto, String codeHeader) {
-        UserMapper userMapper = new UserMapper();
         if(codeHeader!=null && USER_TEMP_CODE_PAIR.containsKey(codeHeader)){
             User user;
             try {
@@ -228,6 +226,27 @@ public class UserDataServiceImpl implements UserDataService {
             throw new UserException("Error Occured");
         }
         return true;
+    }
+
+    @Override
+    public UserRegisterUpdateDto updateUserRole(long userId, Map<String, List<Integer>> authorityList) {
+
+        User user = findById(userId);
+        List<Authority> findAddedAuthority = authorityList.values()
+                .stream()
+                .flatMap(Collection::stream)
+                .map(authorityService::findAuthorityById)
+                .collect(Collectors.toList());
+        user.setAuthorityList(findAddedAuthority);
+        User savedUser = userRepository.save(user);
+
+        UserRegisterUpdateDto dto = userMapper.convertToUserRegisterUpdateDto(savedUser);
+        return dto;
+    }
+
+    @Override
+    public User findById(long id) {
+        return userRepository.findById(id).orElseThrow(()->new UserException("user with id:'"+id+"' not found"));
     }
 
 

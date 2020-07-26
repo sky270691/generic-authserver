@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -72,7 +69,7 @@ public class UserController {
         Map<String,Object> response = new LinkedHashMap<>();
         UserRegisterUpdateDto returnedUserData = userDataService.registerNewUser(userRegisterUpdateDto);
         response.put("status","success");
-        response.put("registered-user",returnedUserData);
+        response.put("registered_user",returnedUserData);
 
         return ResponseEntity.ok(response);
     }
@@ -115,6 +112,15 @@ public class UserController {
             responseBody.put("status","error");
             return ResponseEntity.badRequest().body(responseBody);
         }
+    }
+
+    @PutMapping("/edit-user-authority/{id}")
+    public ResponseEntity<?> editUserAuthority(@PathVariable("id") long userId, @RequestBody Map<String, List<Integer>> authorityList){
+        UserRegisterUpdateDto dto = userDataService.updateUserRole(userId,authorityList);
+        Map<String,Object> returnBody = new LinkedHashMap<>();
+        returnBody.put("status","success");
+        returnBody.put("updated_user_authority",dto);
+        return ResponseEntity.ok(returnBody);
     }
 
 }

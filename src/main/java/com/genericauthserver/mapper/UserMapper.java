@@ -3,12 +3,21 @@ package com.genericauthserver.mapper;
 import com.genericauthserver.dto.UserRegisterUpdateDto;
 import com.genericauthserver.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
+@Component
 public class UserMapper {
+
+    private final AuthorityMapper authorityMapper;
+
+    @Autowired
+    public UserMapper(AuthorityMapper authorityMapper) {
+        this.authorityMapper = authorityMapper;
+    }
 
     public User convertUserRegisterUpdateDtoToUserEntity(UserRegisterUpdateDto dto, PasswordEncoder encoder){
         User user = new User();
@@ -33,6 +42,9 @@ public class UserMapper {
         dto.setSex(user.getSex());
         dto.setLastName(user.getLastName());
         dto.setPhoneNumber(user.getPhoneNumber());
+        dto.setAuthorityList(user.getAuthorityList().stream()
+                .map(authorityMapper::convertToAuthorityDto)
+                .collect(Collectors.toList()));
         return dto;
     }
 

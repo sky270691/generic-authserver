@@ -5,6 +5,8 @@ import com.genericauthserver.repository.AuthorityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AuthorityServiceImpl implements AuthorityService {
 
@@ -23,5 +25,10 @@ public class AuthorityServiceImpl implements AuthorityService {
     @Override
     public Authority findAuthorityByName(String name) {
         return authorityRepository.findAuthorityByName(name).orElse(null);
+    }
+
+    @Override
+    public List<Authority> findAll() {
+        return authorityRepository.findAll();
     }
 }

@@ -6,6 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.List;
 
 public class UserRegisterUpdateDto {
 
@@ -38,6 +39,7 @@ public class UserRegisterUpdateDto {
     @Pattern(regexp = "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{1,}$", message = "email format should be valid")
     private String email;
 
+    private List<AuthorityDto> authorityList;
 
     public long getId() {
         return id;
@@ -101,5 +103,13 @@ public class UserRegisterUpdateDto {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public List<AuthorityDto> getAuthorityList() {
+        return authorityList;
+    }
+
+    public void setAuthorityList(List<AuthorityDto> authorityList) {
+        this.authorityList = authorityList;
     }
 }
