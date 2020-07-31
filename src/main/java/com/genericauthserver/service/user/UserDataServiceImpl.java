@@ -117,8 +117,13 @@ public class UserDataServiceImpl implements UserDataService {
         HttpEntity<MultiValueMap<String,String>> entity =new HttpEntity<>(multiValueMap,headers);
         String url = "http://localhost:8080/oauth/token";
 
-        ResponseEntity<String> response = restTemplate.postForEntity(url,entity,String.class);
-
+        ResponseEntity<String> response = null;
+        try {
+            response = restTemplate.postForEntity(url,entity,String.class);
+        } catch (RestClientException e) {
+            e.printStackTrace();
+            throw new UserException("authorization code not valid");
+        }
 
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -249,7 +254,11 @@ public class UserDataServiceImpl implements UserDataService {
 
             RestTemplate restTemplate = new RestTemplate();
             String url = "http://backend:8080/api/v1/users/activate-seller/"+savedUser.getId();
-            restTemplate.exchange(url,HttpMethod.PUT,entity,String.class);
+            try {
+                restTemplate.exchange(url,HttpMethod.PUT,entity,String.class);
+            } catch (RestClientException e) {
+                e.printStackTrace();
+            }
         }
 
         UserRegisterUpdateDto dto = userMapper.convertToUserRegisterUpdateDto(savedUser);
@@ -259,6 +268,20 @@ public class UserDataServiceImpl implements UserDataService {
     @Override
     public User findById(long id) {
         return userRepository.findById(id).orElseThrow(()->new UserException("user with id:'"+id+"' not found"));
+    }
+
+    @Override
+    public void loginByEmail(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if(user.isEmpty()){
+            User newUser = new User();
+            newUser.setEmail(email);
+            newUser.setPassword(passwordEncoder.encode(email));
+            newUser.setAuthorityList(new ArrayList<>());
+            newUser.getAuthorityList().add(authorityService.findAuthorityById(2));
+            userRepository.saveAndFlush(newUser);
+        }
+        login(email,email);
     }
 
 

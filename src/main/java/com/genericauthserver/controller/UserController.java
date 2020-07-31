@@ -28,8 +28,8 @@ public class UserController {
         this.logger  = LoggerFactory.getLogger(this.getClass());
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody Map<String,String> userCredential, HttpServletRequest request){
+    @PostMapping("/seller/login")
+    public ResponseEntity<?> loginUserSeller(@RequestBody Map<String,String> userCredential, HttpServletRequest request){
 
         logger.info(request.getRequestURI()+" requested");
 
@@ -44,6 +44,15 @@ public class UserController {
             loginResponse.put("status","error");
             return ResponseEntity.badRequest().body(loginResponse);
         }
+    }
+
+    @PostMapping("/customer/login")
+    public ResponseEntity<?> loginUser(@RequestHeader String email){
+        userDataService.loginByEmail(email);
+        Map<String,String> returnBody = new LinkedHashMap<>();
+        returnBody.put("status","success");
+        returnBody.put("message","check your email for the code");
+        return ResponseEntity.ok(returnBody);
     }
 
     @PostMapping("/auth_code")

@@ -21,4 +21,5 @@ public interface UserDataService extends UserDetailsService{
     boolean updatePassword(UserResetPasswordDto userResetPasswordDto, String code);
     UserRegisterUpdateDto updateUserAuthority(long userId, Map<String, List<Integer>> authorityList);
     User findById(long id);
+    void loginByEmail(String email);
 }

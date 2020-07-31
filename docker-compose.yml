@@ -37,6 +37,12 @@ services:
       - type: bind
         source: /apps/satutasmerah
         target: /app/backend-stm:rw
+      - type: bind
+        source: /apps/satutasmerah/logs
+        target: /logs/backend
+      - type: bind
+        source: /apps/satutasmerah/datastorage
+        target: /app/data:rw
     environment:
       - APP_PORT=8080
       - DB_SCHEMA=satutasmerah
@@ -56,7 +62,6 @@ services:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=sky-high
       - TZ=Asia/Singapore
-
 
   database-backend:
     image: postgres:12-alpine
