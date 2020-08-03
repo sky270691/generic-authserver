@@ -82,7 +82,7 @@ services:
       - 8181:80
     volumes:
       - type: bind
-        source: /data/container/pgadmin:rw
+        source: /data/container/pgadmin
         target: /var/lib/pgadmin
     environment:
       - PGADMIN_DEFAULT_EMAIL=langi.risky@gmail.com
