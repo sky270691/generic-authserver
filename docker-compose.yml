@@ -84,7 +84,7 @@ services:
     volumes:
       - type: bind
         source: /data/container/pgadmin
-        target: /pgadmin4
+        target: /pgadmin4:rw
     environment:
       - PGADMIN_DEFAULT_EMAIL=langi.risky@gmail.com
       - PGADMIN_LISTEN_ADDRESS=0.0.0.0
