@@ -76,6 +76,19 @@ services:
       - POSTGRES_PASSWORD=sky-high
       - TZ=Asia/Singapore
 
+  pg-admin:
+    image: dpage/pgadmin4
+    ports:
+      - 8181:80
+    volumes:
+      - type: bind
+        source: /data/container/pgadmin
+        target: /pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=langi.risky@gmail.com
+      - PGADMIN_LISTEN_ADDRESS=0.0.0.0
+      - PGADMIN_DEFAULT_PASSWORD=sky-high
+
 volumes:
   maven-repo:
     external:

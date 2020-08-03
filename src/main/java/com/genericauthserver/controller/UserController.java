@@ -48,6 +48,7 @@ public class UserController {
 
     @PostMapping("/customer/login")
     public ResponseEntity<?> loginUser(@RequestHeader String email){
+        System.out.println("header email " + email);
         userDataService.loginByEmail(email);
         Map<String,String> returnBody = new LinkedHashMap<>();
         returnBody.put("status","success");
