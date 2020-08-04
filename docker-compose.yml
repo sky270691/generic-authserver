@@ -42,7 +42,7 @@ services:
         target: /logs/backend
       - type: bind
         source: /apps/satutasmerah/datastorage
-        target: /app/data:ro
+        target: /app/data
     environment:
       - APP_PORT=8080
       - DB_SCHEMA=satutasmerah
