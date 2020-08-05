@@ -19,7 +19,7 @@ public interface UserDataService extends UserDetailsService{
     Optional<UserRegisterUpdateDto> validateResetPasswordCode(String code);
     void updateUserData(UserRegisterUpdateDto userRegisterUpdateDto);
     boolean updatePassword(UserResetPasswordDto userResetPasswordDto, String code);
-    UserRegisterUpdateDto updateUserAuthority(long userId, Map<String, List<Integer>> authorityList);
+    UserRegisterUpdateDto updateUserAuthority(String userEmail, Map<String, List<Integer>> authorityList);
     User findById(long id);
     void loginByEmail(String email);
 }

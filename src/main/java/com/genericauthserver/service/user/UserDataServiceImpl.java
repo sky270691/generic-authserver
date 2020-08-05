@@ -235,9 +235,9 @@ public class UserDataServiceImpl implements UserDataService {
 
     @Override
     @Transactional
-    public UserRegisterUpdateDto updateUserAuthority(long userId, Map<String, List<Integer>> authorityList) {
+    public UserRegisterUpdateDto updateUserAuthority(String userEmail, Map<String, List<Integer>> authorityList) {
 
-        User user = findById(userId);
+        User user = findUserByEmail(userEmail);
         List<Authority> findAddedAuthority = authorityList.values()
                 .stream()
                 .flatMap(Collection::stream)
