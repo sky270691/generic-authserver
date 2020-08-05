@@ -253,7 +253,7 @@ public class UserDataServiceImpl implements UserDataService {
             HttpEntity<?> entity = new HttpEntity<>(headers);
 
             RestTemplate restTemplate = new RestTemplate();
-            String url = "http://backend:8080/api/v1/users/activate-seller/"+savedUser.getId();
+            String url = "http://backend:8080/api/v1/users/activate-seller/"+savedUser.getEmail();
             try {
                 restTemplate.exchange(url,HttpMethod.PUT,entity,String.class);
             } catch (RestClientException e) {
