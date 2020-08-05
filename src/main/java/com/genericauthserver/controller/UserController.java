@@ -124,8 +124,8 @@ public class UserController {
         }
     }
 
-    @PutMapping("/edit-user-authority/{id}")
-    public ResponseEntity<?> editUserAuthority(@PathVariable("id") String userEmail, @RequestBody Map<String, List<Integer>> authorityList){
+    @PutMapping("/edit-user-authority")
+    public ResponseEntity<?> editUserAuthority(@RequestParam("email") String userEmail, @RequestBody Map<String, List<Integer>> authorityList){
         Map<String,Object> returnBody = new LinkedHashMap<>();
 
         if (authorityList.entrySet().size()>1 || !authorityList.containsKey("role_id_list")) {
