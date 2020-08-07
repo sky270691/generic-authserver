@@ -12,7 +12,7 @@ public class UserRegisterUpdateDto {
 
     private long id;
 
-    @NotBlank(message = "kata sandi tidak boleh kosong")
+//    @NotBlank(message = "kata sandi tidak boleh kosong")
     @Size(min = 6, message = "kata sandi harus mengandung minimal 6 karakter ")
     @Pattern(regexp = "(^(?=\\S*([a-z]|[A-Z])+\\S*[0-9]+\\S*)|^(?=\\S*[0-9]+\\S*([a-z]|[A-Z])+\\S*)).{6,}",message = "kata sandi harus mengandung gabungan angka dan huruf")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

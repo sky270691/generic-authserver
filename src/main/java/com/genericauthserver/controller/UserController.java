@@ -128,7 +128,7 @@ public class UserController {
     public ResponseEntity<?> editUserAuthority(@RequestParam("email") String userEmail, @RequestBody Map<String, List<Integer>> authorityList){
         Map<String,Object> returnBody = new LinkedHashMap<>();
 
-        if (authorityList.entrySet().size()>1 || !authorityList.containsKey("role_id_list")) {
+        if (authorityList.entrySet().size()<1 || !authorityList.containsKey("role_id_list")) {
             returnBody.put("status","bad request");
             return ResponseEntity.badRequest().build();
         }
