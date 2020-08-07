@@ -45,7 +45,7 @@ services:
         target: /app/data
       - type: bind
         source: /etc/letsencrypt/live/api.satutasmerah.com
-        target: /cert:ro
+        target: /cert
     environment:
       - APP_PORT=8443
       - DB_SCHEMA=satutasmerah
