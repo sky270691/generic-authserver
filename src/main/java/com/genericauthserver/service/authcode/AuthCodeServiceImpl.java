@@ -23,6 +23,7 @@ public class AuthCodeServiceImpl implements AuthCodeService {
         String subject = "Kode login Satu Tas Merah";
         String message = "Kode otentikasi anda adalah:\n\n\n"+code+"\n\n\n- Satu Tas Merah -";
 
+        System.out.println("reach here " + code);
         emailClientService.sendSimpleEmail(email,subject,message);
     }
 

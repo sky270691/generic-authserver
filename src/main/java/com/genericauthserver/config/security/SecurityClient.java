@@ -56,7 +56,7 @@ public class SecurityClient implements ClientDetails {
 
     @Override
     public Set<String> getRegisteredRedirectUri() {
-        return Set.of("http://localhost:8080/api/v1/authcode");
+        return Set.of("http://127.0.0.1:8080/api/v1/authcode");
     }
 
 
