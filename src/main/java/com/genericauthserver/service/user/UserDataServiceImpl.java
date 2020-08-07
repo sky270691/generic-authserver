@@ -115,7 +115,7 @@ public class UserDataServiceImpl implements UserDataService {
         multiValueMap.add("code",authCode);
 
         HttpEntity<MultiValueMap<String,String>> entity =new HttpEntity<>(multiValueMap,headers);
-        String url = "http://localhost:8443/oauth/token";
+        String url = "http://localhost:8080/oauth/token";
 
         ResponseEntity<String> response = null;
         try {
