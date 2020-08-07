@@ -6,7 +6,7 @@ services:
       context: "."
       dockerfile: Dockerfile-auth
     ports:
-      - 81:8080
+      - 8443:8443
     volumes:
       - type: volume
         source: maven-repo
@@ -17,10 +17,15 @@ services:
       - type: bind
         source: /apps/jwtauthserver/logs
         target: /logs/authserver
+      - type: bind
+        source: /etc/letsencrypt/live/api.satutasmerah.com
+        target: /cert
     environment:
-      - APP_PORT=8080
+      - APP_PORT=8443
       - DB_SCHEMA=authserver
       - TZ=Asia/Singapore
+      - SSL_KEYSTORE_LOCATION=/cert/keystore.p12
+      - KEY_STORE_PASSWORD=sky-high
     links:
       - database-auth:database
 

@@ -2,6 +2,7 @@ FROM openjdk:13-alpine
 USER root
 COPY . /app/authserver
 WORKDIR /app/authserver
+RUN mkdir /cert
 RUN chmod +x ./mvnw
 
 #install tzdata to modify linux alpine container timezone
