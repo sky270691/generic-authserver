@@ -28,7 +28,7 @@ public class EmailClientServiceImpl implements EmailClientService {
         mailMessage.setTo(to);
         mailMessage.setSubject(subject);
         mailMessage.setText(message);
-
+        System.out.println("reach here");
         mailSender.send(mailMessage);
     }
 }
