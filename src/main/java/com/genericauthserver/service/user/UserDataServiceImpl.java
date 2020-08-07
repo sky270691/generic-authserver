@@ -95,7 +95,7 @@ public class UserDataServiceImpl implements UserDataService {
         try {
             restTemplate.exchange(url, HttpMethod.GET,entity,String.class,null,null);
         } catch (RestClientException e) {
-            throw new UserException("email dan/atau password salah");
+            throw new UserException(e.getLocalizedMessage());
         }
     }
 
