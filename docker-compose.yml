@@ -43,11 +43,14 @@ services:
       - type: bind
         source: /apps/satutasmerah/datastorage
         target: /app/data
+      - type: bind
+        source: /etc/letsencrypt/live/api.satutasmerah.com
+        target: /cert:ro
     environment:
       - APP_PORT=8443
       - DB_SCHEMA=satutasmerah
       - TZ=Asia/Singapore
-      - SSL_KEYSTORE_LOCATION=/etc/letsencrypt/live/api.satutasmerah.com/keystore.p12
+      - SSL_KEYSTORE_LOCATION=/cert/keystore.p12
       - KEY_STORE_PASSWORD=sky-high
     links:
       - database-backend:dbbackend
