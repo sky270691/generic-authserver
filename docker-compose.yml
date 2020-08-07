@@ -29,7 +29,7 @@ services:
       context: "/apps/satutasmerah/backend-marketplace-stm/."
       dockerfile: /apps/satutasmerah/backend-marketplace-stm/Dockerfile-backend
     ports:
-      - 443:8443
+      - 443:8080
     volumes:
       - type: volume
         source: maven-repo
@@ -44,7 +44,7 @@ services:
         source: /apps/satutasmerah/datastorage
         target: /app/data
     environment:
-      - APP_PORT=8443
+      - APP_PORT=8080
       - DB_SCHEMA=satutasmerah
       - TZ=Asia/Singapore
       - SSL_KEYSTORE_LOCATION=/etc/letsencrypt/live/api.satutasmerah.com/keystore.p12
