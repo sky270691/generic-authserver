@@ -86,7 +86,7 @@ public class UserDataServiceImpl implements UserDataService {
         HttpHeaders headers = new HttpHeaders();
 //        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.set("Authorization",fullAuthHeader);
-        String url = "https://127.0.0.1:8443/oauth/authorize?scope=READ_WRITE&client_id=front-stm&response_type=code";
+        String url = "https://api.satutasmerah.com:8443/oauth/authorize?scope=READ_WRITE&client_id=front-stm&response_type=code";
 
         HttpEntity<?> entity = new HttpEntity<>(headers);
 
