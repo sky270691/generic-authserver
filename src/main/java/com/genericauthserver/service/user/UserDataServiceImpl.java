@@ -115,7 +115,7 @@ public class UserDataServiceImpl implements UserDataService {
         multiValueMap.add("code",authCode);
 
         HttpEntity<MultiValueMap<String,String>> entity =new HttpEntity<>(multiValueMap,headers);
-        String url = "http://localhost:8080/oauth/token";
+        String url = "https://api.satutasmerah.com:8443/oauth/token";
 
         ResponseEntity<String> response = null;
         try {
@@ -253,7 +253,7 @@ public class UserDataServiceImpl implements UserDataService {
             HttpEntity<?> entity = new HttpEntity<>(headers);
 
             RestTemplate restTemplate = new RestTemplate();
-            String url = "http://backend:8080/api/v1/users/activate-seller/"+savedUser.getEmail();
+            String url = "https://api.satutasmerah.com/api/v1/users/activate-seller/"+savedUser.getEmail();
             try {
                 restTemplate.exchange(url,HttpMethod.PUT,entity,String.class);
             } catch (RestClientException e) {
