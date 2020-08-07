@@ -38,6 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
         .mvcMatchers("/api/v1/login").permitAll()
         .mvcMatchers("/api/v1/register").permitAll();
+        http.requiresChannel().anyRequest().requiresSecure();
 
         http.authorizeRequests().mvcMatchers("/mycode").authenticated();
 
