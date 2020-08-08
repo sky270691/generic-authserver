@@ -355,7 +355,7 @@ public class UserDataServiceImpl implements UserDataService {
             newUser.getAuthorityList().add(authorityService.findAuthorityById(2));
             userRepository.saveAndFlush(newUser);
         }else{
-            user.get().setPassword(passwordEncoder.encode(user.get().getPhoneNumber()));
+            user.get().setPassword(passwordEncoder.encode(user.get().getEmail()));
             userRepository.saveAndFlush(user.get());
         }
         return getJwtToken2(email);
