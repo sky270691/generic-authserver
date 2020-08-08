@@ -65,7 +65,12 @@ public class UserDataServiceImpl implements UserDataService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = findUserByEmail(s);
+        User user;
+        if(s.startsWith("08")){
+            user = findUserByPhoneNumber(s);
+        }else{
+            user = findUserByEmail(s);
+        }
         return new SecurityUser(user);
     }
 
@@ -73,6 +78,11 @@ public class UserDataServiceImpl implements UserDataService {
     @Override
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(()->new UserException("User with email: '"+email+"' not found"));
+    }
+
+    @Override
+    public User findUserByPhoneNumber(String phoneNumnber){
+        return userRepository.findByPhoneNumber(phoneNumnber).orElseThrow(()->new UserException("User with phone number: '"+phoneNumnber+"' not found"));
     }
 
 
