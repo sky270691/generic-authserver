@@ -71,7 +71,12 @@ public class UserController {
         System.out.println("header email " + email);
         userDataService.loginByEmail(email);
         RedirectView view = new RedirectView();
-        String url = "https://api.satutasmerah.com/api/v1/users?token_value="+token+"&Server_Data=true";
+        String url = "https://api.satutasmerah.com/api/v1/users/token?value="+token+"&Server_Data=true";
+        if(email == null){
+            url = "https://api.satutasmerah.com/api/v1/users/token?value="+token+"&Server_Data=true&credential="+phoneNumber;
+        }else if(phoneNumber == null){
+            url = "https://api.satutasmerah.com/api/v1/users/token?value="+token+"&Server_Data=true&credential="+email;
+        }
         return new RedirectView(url);
     }
 
