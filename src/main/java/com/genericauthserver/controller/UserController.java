@@ -67,9 +67,6 @@ public class UserController {
         if(phoneNumber != null && !phoneNumber.equalsIgnoreCase("")){
             token = userDataService.loginByPhoneGoogle(phoneNumber);
         }
-
-        System.out.println("header email " + email);
-        userDataService.loginByEmail(email);
         RedirectView view = new RedirectView();
         String url = "https://api.satutasmerah.com/api/v1/users/token?value="+token+"&Server_Data=true";
         if(email == null){
