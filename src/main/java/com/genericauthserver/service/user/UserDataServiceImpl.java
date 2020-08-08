@@ -153,7 +153,7 @@ public class UserDataServiceImpl implements UserDataService {
         multiValueMap.add("password",emailOrPhone);
 
         HttpEntity<MultiValueMap<String,String>> entity =new HttpEntity<>(multiValueMap,headers);
-        String url = "https://api.satutasmerah.com:8443/oauth/token";
+        String url = "/oauth/token";
 
         ResponseEntity<String> response = null;
         try {
