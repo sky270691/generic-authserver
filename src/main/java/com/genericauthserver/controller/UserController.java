@@ -61,13 +61,15 @@ public class UserController {
     public RedirectView loginUser(@RequestHeader(required = false) String email, @RequestHeader(value = "phone", required = false) String phoneNumber){
 
         String token = "";
+
         if(email != null && !email.equalsIgnoreCase("")){
             token = userDataService.loginByEmailGoogle(email);
         }
+
         if(phoneNumber != null && !phoneNumber.equalsIgnoreCase("")){
             token = userDataService.loginByPhoneGoogle(phoneNumber);
         }
-        RedirectView view = new RedirectView();
+
         String url = "https://api.satutasmerah.com/api/v1/users/token?value="+token+"&Server_Data=true";
         if(email == null){
             url = "https://api.satutasmerah.com/api/v1/users/token?value="+token+"&Server_Data=true&credential="+phoneNumber;
