@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -54,6 +55,24 @@ public class UserController {
         returnBody.put("status","success");
         returnBody.put("message","check your email for the code");
         return ResponseEntity.ok(returnBody);
+    }
+
+    @PostMapping("/customer/login/google")
+    public RedirectView loginUser(@RequestHeader(required = false) String email, @RequestHeader(value = "phone", required = false) String phoneNumber){
+
+        String token = "";
+        if(email != null && !email.equalsIgnoreCase("")){
+            token = userDataService.loginByEmailGoogle(email);
+        }
+        if(phoneNumber != null && !phoneNumber.equalsIgnoreCase("")){
+            token = userDataService.loginByPhoneGoogle(phoneNumber);
+        }
+
+        System.out.println("header email " + email);
+        userDataService.loginByEmail(email);
+        RedirectView view = new RedirectView();
+        String url = "https://api.satutasmerah.com/api/v1/users?token_value="+token+"&Server_Data=true";
+        return new RedirectView(url);
     }
 
     @PostMapping("/auth_code")

@@ -137,6 +137,44 @@ public class UserDataServiceImpl implements UserDataService {
 
     }
 
+    public String getJwtToken2(String emailOrPhone) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        String authHeaderPrefix = "Basic ";
+        String clientCredential = Base64.getEncoder().encodeToString("front-stm:front123".getBytes());
+        String fullAuthHeader = authHeaderPrefix+clientCredential;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.set("Authorization",fullAuthHeader);
+
+        MultiValueMap<String,String> multiValueMap = new LinkedMultiValueMap<>();
+        multiValueMap.add("grant_type","password");
+        multiValueMap.add("username",emailOrPhone);
+        multiValueMap.add("password",emailOrPhone);
+
+        HttpEntity<MultiValueMap<String,String>> entity =new HttpEntity<>(multiValueMap,headers);
+        String url = "https://api.satutasmerah.com:8443/oauth/token";
+
+        ResponseEntity<String> response = null;
+        try {
+            response = restTemplate.postForEntity(url,entity,String.class);
+        } catch (RestClientException e) {
+            e.printStackTrace();
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            JsonNode jsonNode = mapper.readTree(response.getBody());
+            String token = jsonNode.get("access_token").asText();
+            return token;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new UserException("getting jwt token error");
+        }
+
+    }
+
+
     @Override
     @Transactional
     public UserRegisterUpdateDto registerNewUser(UserRegisterUpdateDto dto) {
@@ -280,8 +318,47 @@ public class UserDataServiceImpl implements UserDataService {
             newUser.setAuthorityList(new ArrayList<>());
             newUser.getAuthorityList().add(authorityService.findAuthorityById(2));
             userRepository.saveAndFlush(newUser);
+        }else{
+            user.get().setPassword(passwordEncoder.encode(user.get().getEmail()));
+            userRepository.saveAndFlush(user.get());
         }
         login(email,email);
+    }
+
+    @Override
+    public String loginByPhoneGoogle(String phoneNumber){
+
+        Optional<User> user = userRepository.findByPhoneNumber(phoneNumber);
+        if(user.isEmpty()){
+            User newUser = new User();
+            newUser.setPhoneNumber(phoneNumber);
+            newUser.setPassword(passwordEncoder.encode(phoneNumber));
+            newUser.setAuthorityList(new ArrayList<>());
+            newUser.getAuthorityList().add(authorityService.findAuthorityById(2));
+            userRepository.saveAndFlush(newUser);
+        }else{
+            user.get().setPassword(passwordEncoder.encode(user.get().getPhoneNumber()));
+            userRepository.saveAndFlush(user.get());
+        }
+        return getJwtToken2(phoneNumber);
+    }
+
+    @Override
+    public String loginByEmailGoogle(String email){
+
+        Optional<User> user = userRepository.findByEmail(email);
+        if(user.isEmpty()){
+            User newUser = new User();
+            newUser.setEmail(email);
+            newUser.setPassword(passwordEncoder.encode(email));
+            newUser.setAuthorityList(new ArrayList<>());
+            newUser.getAuthorityList().add(authorityService.findAuthorityById(2));
+            userRepository.saveAndFlush(newUser);
+        }else{
+            user.get().setPassword(passwordEncoder.encode(user.get().getPhoneNumber()));
+            userRepository.saveAndFlush(user.get());
+        }
+        return getJwtToken2(email);
     }
 
 

@@ -22,4 +22,6 @@ public interface UserDataService extends UserDetailsService{
     UserRegisterUpdateDto updateUserAuthority(String userEmail, Map<String, List<Integer>> authorityList);
     User findById(long id);
     void loginByEmail(String email);
+    String loginByPhoneGoogle(String phoneNumber);
+    String loginByEmailGoogle(String email);
 }
