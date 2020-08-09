@@ -274,7 +274,7 @@ public class UserDataServiceImpl implements UserDataService {
         }
 
         user.setFirstName(userRegisterUpdateDto.getFirstName());
-        if(userRegisterUpdateDto.getLastName() != null && userRegisterUpdateDto.getLastName().equalsIgnoreCase("")){
+        if(userRegisterUpdateDto.getLastName() != null && !userRegisterUpdateDto.getLastName().equalsIgnoreCase("")){
             user.setLastName(userRegisterUpdateDto.getLastName());
         }
         user.setSex(userRegisterUpdateDto.getSex());
@@ -284,7 +284,11 @@ public class UserDataServiceImpl implements UserDataService {
         UserRegisterUpdateDto registeredUser =  userMapper.convertToUserRegisterUpdateDto(savedUser);
         HttpEntity<UserRegisterUpdateDto> entity = new HttpEntity<>(registeredUser);
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.exchange(resourceServerBackendRegistrationUrl, HttpMethod.POST,entity,String.class);
+        try {
+            restTemplate.exchange(resourceServerBackendRegistrationUrl, HttpMethod.POST,entity,String.class);
+        } catch (RestClientException e) {
+            e.printStackTrace();
+        }
 
 
     }
