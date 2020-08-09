@@ -266,10 +266,10 @@ public class UserDataServiceImpl implements UserDataService {
     public void updateUserDataGoogle(UserRegisterUpdateDto userRegisterUpdateDto){
         User user = null;
         if(userRegisterUpdateDto.getEmail() != null){
-            user = userRepository.findUserByEmailOrPhoneNumber(userRegisterUpdateDto.getEmail(),null)
+            user = userRepository.findByEmail(userRegisterUpdateDto.getEmail())
                     .orElseThrow(()-> new UserException("user with email: '"+userRegisterUpdateDto.getEmail()+"' not found"));
         }else if(userRegisterUpdateDto.getPhoneNumber() != null){
-            user = userRepository.findUserByEmailOrPhoneNumber(null,userRegisterUpdateDto.getPhoneNumber())
+            user = userRepository.findByPhoneNumber(userRegisterUpdateDto.getPhoneNumber())
                     .orElseThrow(()-> new UserException("user with phone number: '"+userRegisterUpdateDto.getPhoneNumber()+"' not found"));
         }
 
