@@ -158,13 +158,15 @@ public class UserController {
             return ResponseEntity.badRequest().body(responseBody);
         }
     }
-//
-//    @PutMapping("/update_user")
-//    public ResponseEntity<?> editUserAuthority(@RequestBody UserRegisterUpdateDto dto){
-//
-//        userDataService.registerNewUser(dto);
-//
-//    }
+
+    @PutMapping("/update_google_user")
+    public ResponseEntity<?> updateUserData(@RequestBody UserRegisterUpdateDto dto){
+
+        userDataService.updateUserDataGoogle(dto);
+        Map<String,String> returnBody = new LinkedHashMap<>();
+        returnBody.put("status","success");
+        return ResponseEntity.ok(returnBody);
+    }
 
     @PutMapping("/edit_user_authority")
     public ResponseEntity<?> editUserAuthority(@RequestParam("email") String userEmail, @RequestBody Map<String, List<Integer>> authorityList){

@@ -32,6 +32,18 @@ public class UserMapper {
         return user;
     }
 
+    public User convertUserRegisterUpdateDtoToUserEntityWithoutPass(UserRegisterUpdateDto dto){
+        User user = new User();
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+        user.setDateOfBirth(dto.getDateOfBirth());
+        user.setEmail(dto.getEmail());
+        user.setSex(dto.getSex());
+        user.setPhoneNumber(dto.getPhoneNumber());
+        user.setId(dto.getId());
+        return user;
+    }
+
     public UserRegisterUpdateDto convertToUserRegisterUpdateDto(User user){
         UserRegisterUpdateDto dto = new UserRegisterUpdateDto();
 

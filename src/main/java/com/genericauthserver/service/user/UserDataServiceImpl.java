@@ -262,6 +262,32 @@ public class UserDataServiceImpl implements UserDataService {
         userRepository.save(user);
     }
 
+    @Override
+    public void updateUserDataGoogle(UserRegisterUpdateDto userRegisterUpdateDto){
+        User user = null;
+        if(userRegisterUpdateDto.getEmail() != null){
+            user = userRepository.findUserByEmailOrPhoneNumber(userRegisterUpdateDto.getEmail(),null)
+                    .orElseThrow(()-> new UserException("user with email: '"+userRegisterUpdateDto.getEmail()+"' not found"));
+        }else if(userRegisterUpdateDto.getPhoneNumber() != null){
+            user = userRepository.findUserByEmailOrPhoneNumber(null,userRegisterUpdateDto.getPhoneNumber())
+                    .orElseThrow(()-> new UserException("user with phone number: '"+userRegisterUpdateDto.getPhoneNumber()+"' not found"));
+        }
+
+        user.setFirstName(userRegisterUpdateDto.getFirstName());
+        if(userRegisterUpdateDto.getLastName() != null && userRegisterUpdateDto.getLastName().equalsIgnoreCase("")){
+            user.setLastName(userRegisterUpdateDto.getLastName());
+        }
+        user.setSex(userRegisterUpdateDto.getSex());
+        user.setDateOfBirth(userRegisterUpdateDto.getDateOfBirth());
+        User savedUser = userRepository.save(user);
+
+        UserRegisterUpdateDto registeredUser =  userMapper.convertToUserRegisterUpdateDto(savedUser);
+        HttpEntity<UserRegisterUpdateDto> entity = new HttpEntity<>(registeredUser);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.exchange(resourceServerBackendRegistrationUrl, HttpMethod.POST,entity,String.class);
+
+
+    }
 
     @Override
     public boolean updatePassword(UserResetPasswordDto userResetPasswordDto, String codeHeader) {
