@@ -29,7 +29,8 @@ public class AuthCodeController {
     @GetMapping
     public ResponseEntity<?> getCode(@RequestParam String code){
         System.out.println(code);
-        authCodeService.sendAuthCodeToEmail(code);
+//        authCodeService.sendAuthCodeToEmail(code);
+        authCodeService.sendResetPasswordCodeToEmail("bakekok","langi.risky@gmail.com");
 
         Map<String,String> returnValue = new HashMap<>();
         returnValue.put("status","success");

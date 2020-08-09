@@ -107,7 +107,19 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(value = "/reset-password/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/register/google")
+    public ResponseEntity<?> registerNewGoogleUserPhone(@RequestBody UserRegisterUpdateDto userRegisterUpdateDto){
+
+        Map<String,Object> response = new LinkedHashMap<>();
+        UserRegisterUpdateDto returnedUserData = userDataService.registerNewUser(userRegisterUpdateDto);
+        response.put("status","success");
+        response.put("registered_user",returnedUserData);
+
+        return ResponseEntity.ok(response);
+
+    }
+
+    @PostMapping(value = "/reset_password/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String,String>> requestResetPasswordCode(@PathVariable @Email(regexp =
             "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{1,}$",
             message = "email harus menggunakan format yang benar") String email){
@@ -118,7 +130,7 @@ public class UserController {
         return ResponseEntity.ok(returnValue);
     }
 
-    @GetMapping("/reset-password/{code}")
+    @GetMapping("/reset_password/{code}")
     public ResponseEntity<?> validateResetCode(@PathVariable String code){
         Optional<UserRegisterUpdateDto> user = userDataService.validateResetPasswordCode(code);
         Map<String,String> returnBody = new HashMap<>();
@@ -131,7 +143,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/update-password")
+    @PutMapping("/update_password")
     public ResponseEntity<?> updatePassword(@RequestBody UserResetPasswordDto emailPassword, @RequestHeader("X-Code") String code){
         logger.info("user with email: '"+emailPassword.getEmail()+"' tried to update password");
         Map<String, String> responseBody = new HashMap<>();
@@ -146,8 +158,15 @@ public class UserController {
             return ResponseEntity.badRequest().body(responseBody);
         }
     }
+//
+//    @PutMapping("/update_user")
+//    public ResponseEntity<?> editUserAuthority(@RequestBody UserRegisterUpdateDto dto){
+//
+//        userDataService.registerNewUser(dto);
+//
+//    }
 
-    @PutMapping("/edit-user-authority")
+    @PutMapping("/edit_user_authority")
     public ResponseEntity<?> editUserAuthority(@RequestParam("email") String userEmail, @RequestBody Map<String, List<Integer>> authorityList){
         Map<String,Object> returnBody = new LinkedHashMap<>();
 

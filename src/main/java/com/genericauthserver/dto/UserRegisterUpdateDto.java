@@ -26,7 +26,6 @@ public class UserRegisterUpdateDto {
     private String lastName;
 
     @Pattern(regexp = "(MALE)|(FEMALE)")
-    @NotBlank(message = "jenis kelamin tidak boleh kosong")
     private String sex;
 
     @JsonProperty("date_of_birth")
