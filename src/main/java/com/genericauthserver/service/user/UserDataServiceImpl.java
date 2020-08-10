@@ -66,10 +66,10 @@ public class UserDataServiceImpl implements UserDataService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user;
-        if(s.startsWith("08")){
-            user = findUserByPhoneNumber(s);
-        }else{
+        if(s.contains("@")){
             user = findUserByEmail(s);
+        }else{
+            user = findUserByPhoneNumber(s);
         }
         return new SecurityUser(user);
     }
