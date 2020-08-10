@@ -16,12 +16,6 @@ import java.util.Arrays;
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final AppIdFilter appIdFilter;
-
-    public WebSecurityConfig(AppIdFilter appIdFilter) {
-        this.appIdFilter = appIdFilter;
-    }
-
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -62,6 +56,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             corsConfigurer.configurationSource(corsConfigurationSource);
         });
 
-        http.addFilterAt(appIdFilter, BasicAuthenticationFilter.class);
     }
 }

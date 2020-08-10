@@ -62,7 +62,7 @@ public class UserController {
     }
 
     @PostMapping("/customer/login/google")
-    public RedirectView loginUser(@RequestHeader(required = false) String email, @RequestHeader(value = "phone", required = false) String phoneNumber){
+    public ResponseEntity<?> loginUser(@RequestHeader(required = false) String email, @RequestHeader(value = "phone", required = false) String phoneNumber){
 
         String token = "";
 
@@ -80,7 +80,11 @@ public class UserController {
         }else if(phoneNumber == null){
             url = "https://api.satutasmerah.com/api/v1/users/token?value="+token+"&Server_Data=true&credential="+email;
         }
-        return new RedirectView(url);
+
+        Map<String,String> returnBody = new LinkedHashMap<>();
+        returnBody.put("status","success");
+        returnBody.put("user_data",url);
+        return ResponseEntity.ok(returnBody);
     }
 
     @PostMapping("/auth_code")
