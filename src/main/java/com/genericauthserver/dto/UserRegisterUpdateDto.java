@@ -111,4 +111,19 @@ public class UserRegisterUpdateDto {
     public void setAuthorityList(List<AuthorityDto> authorityList) {
         this.authorityList = authorityList;
     }
+
+    @Override
+    public String toString() {
+        return "UserRegisterUpdateDto{" +
+                "id=" + id +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", sex='" + sex + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", authorityList=" + authorityList +
+                '}';
+    }
 }

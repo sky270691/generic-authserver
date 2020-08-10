@@ -171,6 +171,8 @@ public class UserController {
     public ResponseEntity<?> updateUserData(@RequestBody UserRegisterUpdateDto dto, @RequestHeader("Server-Data") String serverData){
         Map<String,String> returnBody = new LinkedHashMap<>();
         if(serverData.equalsIgnoreCase("true")){
+
+            System.out.println(dto);
             userDataService.updateUserDataGoogle(dto);
             returnBody.put("status","success");
             return ResponseEntity.ok(returnBody);
