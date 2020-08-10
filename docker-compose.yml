@@ -26,6 +26,7 @@ services:
       - TZ=Asia/Singapore
       - SSL_KEYSTORE_LOCATION=/cert/keystore.p12
       - KEY_STORE_PASSWORD=sky-high
+      - APP_ID=app-android
     links:
       - database-auth:database
 

@@ -6,6 +6,7 @@ import com.genericauthserver.service.user.UserDataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +23,13 @@ public class UserController {
 
     private final UserDataService userDataService;
     private final Logger logger;
+    private final String appId;
 
     @Autowired
-    public UserController(UserDataService userDataService) {
+    public UserController(UserDataService userDataService,
+                          @Value("${endpoint.header.app.id}") String appId) {
         this.userDataService = userDataService;
+        this.appId = appId;
         this.logger  = LoggerFactory.getLogger(this.getClass());
     }
 
@@ -160,8 +164,10 @@ public class UserController {
     }
 
     @PutMapping("/update_google_user")
-    public ResponseEntity<?> updateUserData(@RequestBody UserRegisterUpdateDto dto){
-
+    public ResponseEntity<?> updateUserData(@RequestBody UserRegisterUpdateDto dto, @RequestHeader("app-id") String appId){
+        byte[] headerByte = Base64.getDecoder().decode(appId);
+        String header = new String(headerByte);
+        if(header.equalsIgnoreCase("app"))
         userDataService.updateUserDataGoogle(dto);
         Map<String,String> returnBody = new LinkedHashMap<>();
         returnBody.put("status","success");
