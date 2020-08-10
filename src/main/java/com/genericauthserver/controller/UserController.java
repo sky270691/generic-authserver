@@ -74,11 +74,11 @@ public class UserController {
             token = userDataService.loginByPhoneGoogle(phoneNumber);
         }
 
-        String url = "https://api.satutasmerah.com/api/v1/users/token?value="+token+"&Server_Data=true";
+        String url = "https://api.satutasmerah.com/api/v1/users?token_value="+token+"&Server_Data=true";
         if(email == null){
-            url = "https://api.satutasmerah.com/api/v1/users/token?value="+token+"&Server_Data=true&credential="+phoneNumber;
+            url = "https://api.satutasmerah.com/api/v1/users?token_value="+token+"&Server_Data=true&credential="+phoneNumber;
         }else if(phoneNumber == null){
-            url = "https://api.satutasmerah.com/api/v1/users/token?value="+token+"&Server_Data=true&credential="+email;
+            url = "https://api.satutasmerah.com/api/v1/users?token_value="+token+"&Server_Data=true&credential="+email;
         }
 
         Map<String,String> returnBody = new LinkedHashMap<>();
