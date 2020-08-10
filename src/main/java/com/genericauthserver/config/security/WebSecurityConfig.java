@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -14,6 +15,13 @@ import java.util.Arrays;
 
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final AppIdFilter appIdFilter;
+
+    public WebSecurityConfig(AppIdFilter appIdFilter) {
+        this.appIdFilter = appIdFilter;
+    }
+
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -53,5 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             };
             corsConfigurer.configurationSource(corsConfigurationSource);
         });
+
+        http.addFilterAt(appIdFilter, BasicAuthenticationFilter.class);
     }
 }
