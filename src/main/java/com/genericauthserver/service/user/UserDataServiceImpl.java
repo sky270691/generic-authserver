@@ -279,17 +279,17 @@ public class UserDataServiceImpl implements UserDataService {
         }
         user.setSex(userRegisterUpdateDto.getSex());
         user.setDateOfBirth(userRegisterUpdateDto.getDateOfBirth());
-        User savedUser = userRepository.save(user);
+        userRepository.save(user);
 
-        UserRegisterUpdateDto registeredUser =  userMapper.convertToUserRegisterUpdateDto(savedUser);
-        HttpEntity<UserRegisterUpdateDto> entity = new HttpEntity<>(registeredUser);
-        RestTemplate restTemplate = new RestTemplate();
-        try {
-            restTemplate.exchange(resourceServerBackendRegistrationUrl, HttpMethod.POST,entity,String.class);
-        } catch (RestClientException e) {
-            e.printStackTrace();
-        }
-
+//        UserRegisterUpdateDto registeredUser =  userMapper.convertToUserRegisterUpdateDto(savedUser);
+//        HttpEntity<UserRegisterUpdateDto> entity = new HttpEntity<>(registeredUser);
+//        RestTemplate restTemplate = new RestTemplate();
+//        try {
+//            restTemplate.exchange(resourceServerBackendRegistrationUrl, HttpMethod.POST,entity,String.class);
+//        } catch (RestClientException e) {
+//            e.printStackTrace();
+//        }
+//
 
     }
 
