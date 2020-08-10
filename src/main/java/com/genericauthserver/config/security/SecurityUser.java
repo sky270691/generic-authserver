@@ -39,6 +39,9 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public String getUsername() {
+        if(user.getEmail() == null){
+            return user.getPhoneNumber();
+        }
         return user.getEmail();
     }
 
