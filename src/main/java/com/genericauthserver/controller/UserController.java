@@ -169,10 +169,8 @@ public class UserController {
 
     @PutMapping("/update_google_user")
     public ResponseEntity<?> updateUserData(@RequestBody UserRegisterUpdateDto dto, @RequestHeader("app-id") String appId){
-        byte[] headerByte = Base64.getDecoder().decode(appId);
-        String header = new String(headerByte);
         Map<String,String> returnBody = new LinkedHashMap<>();
-        if(header.equalsIgnoreCase(this.appId)){
+        if(appId.equalsIgnoreCase(this.appId)){
             userDataService.updateUserDataGoogle(dto);
             returnBody.put("status","success");
             return ResponseEntity.ok(returnBody);
