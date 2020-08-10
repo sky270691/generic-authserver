@@ -279,6 +279,15 @@ public class UserDataServiceImpl implements UserDataService {
         }
         user.setSex(userRegisterUpdateDto.getSex());
         user.setDateOfBirth(userRegisterUpdateDto.getDateOfBirth());
+
+        if(userRegisterUpdateDto.getPhoneNumber() !=null && userRegisterUpdateDto.getPhoneNumber().equalsIgnoreCase("")){
+            user.setPhoneNumber(userRegisterUpdateDto.getPhoneNumber());
+        }
+
+        if(userRegisterUpdateDto.getEmail() !=null && userRegisterUpdateDto.getEmail().equalsIgnoreCase("")){
+            user.setEmail(userRegisterUpdateDto.getEmail());
+        }
+
         userRepository.save(user);
 
 //        UserRegisterUpdateDto registeredUser =  userMapper.convertToUserRegisterUpdateDto(savedUser);
