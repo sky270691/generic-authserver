@@ -27,7 +27,7 @@ public class UserController {
 
     @Autowired
     public UserController(UserDataService userDataService,
-                          @Value("${endpoint.header.app.id}") String appId) {
+                          @Value("${endpoint.header.appid}") String appId) {
         this.userDataService = userDataService;
         this.appId = appId;
         this.logger  = LoggerFactory.getLogger(this.getClass());
