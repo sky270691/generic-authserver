@@ -336,7 +336,7 @@ public class UserDataServiceImpl implements UserDataService {
         if(savedUser.getAuthorityList().stream().anyMatch(x->x.getId()==4)){
 
             HttpHeaders headers = new HttpHeaders();
-            headers.add("Server-Data","true");
+            headers.add("Server_Data","true");
             HttpEntity<?> entity = new HttpEntity<>(headers);
 
             RestTemplate restTemplate = new RestTemplate();
