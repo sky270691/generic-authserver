@@ -322,7 +322,7 @@ public class UserDataServiceImpl implements UserDataService {
 
     @Override
     @Transactional
-    public UserRegisterUpdateDtoupdateUserAuthority(String userEmail, Map<String, List<Integer>> authorityList) {
+    public UserRegisterUpdateDto updateUserAuthority(String userEmail, Map<String, List<Integer>> authorityList) {
 
         User user = findUserByEmail(userEmail);
         List<Authority> findAddedAuthority = authorityList.values()
