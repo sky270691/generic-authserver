@@ -29,6 +29,21 @@ public class UserMapper {
         user.setSex(dto.getSex());
         user.setPhoneNumber(dto.getPhoneNumber());
         user.setId(dto.getId());
+
+        if(dto.getFcmDataList() != null && !dto.getFcmDataList().isEmpty()) {
+            StringBuilder fcmString = new StringBuilder();
+
+            for (int i = 0; i < dto.getFcmDataList().size(); i++) {
+                if (i == dto.getFcmDataList().size() - 1) {
+                    fcmString.append(dto.getFcmDataList().get(i));
+                } else {
+                    fcmString.append(dto.getFcmDataList().get(i)).append(";");
+                }
+            }
+
+            user.setFcmData(fcmString.toString());
+        }
+
         return user;
     }
 
@@ -57,6 +72,18 @@ public class UserMapper {
         dto.setAuthorityList(user.getAuthorityList().stream()
                 .map(authorityMapper::convertToAuthorityDto)
                 .collect(Collectors.toList()));
+
+
+
+
+        if(user.getFcmData()!=null) {
+            String[] fcmDataUser = user.getFcmData().split(";");
+
+            dto.setFcmDataList(new ArrayList<>());
+            for (String s : fcmDataUser) {
+                dto.getFcmDataList().add(s);
+            }
+        }
         return dto;
     }
 

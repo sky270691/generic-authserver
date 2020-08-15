@@ -322,7 +322,7 @@ public class UserDataServiceImpl implements UserDataService {
 
     @Override
     @Transactional
-    public UserRegisterUpdateDto updateUserAuthority(String userEmail, Map<String, List<Integer>> authorityList) {
+    public UserRegisterUpdateDtoupdateUserAuthority(String userEmail, Map<String, List<Integer>> authorityList) {
 
         User user = findUserByEmail(userEmail);
         List<Authority> findAddedAuthority = authorityList.values()
@@ -340,7 +340,7 @@ public class UserDataServiceImpl implements UserDataService {
             HttpEntity<?> entity = new HttpEntity<>(headers);
 
             RestTemplate restTemplate = new RestTemplate();
-            String url = "https://api.satutasmerah.com/api/v1/users/activate-seller/"+savedUser.getEmail();
+            String url = "https://api.satutasmerah.com/api/v1/users/activate_seller/"+savedUser.getEmail();
             try {
                 restTemplate.exchange(url,HttpMethod.PUT,entity,String.class);
             } catch (RestClientException e) {

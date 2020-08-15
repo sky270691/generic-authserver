@@ -30,6 +30,8 @@ public class User {
 
     private String sex;
 
+    private String fcmData;
+
     @Column(name = "date_of_birth")
     private LocalDate DateOfBirth;
 
@@ -134,5 +136,13 @@ public class User {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public String getFcmData() {
+        return fcmData;
+    }
+
+    public void setFcmData(String fcmData) {
+        this.fcmData = fcmData;
     }
 }
