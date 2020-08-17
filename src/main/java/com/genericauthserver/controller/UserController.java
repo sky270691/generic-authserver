@@ -51,15 +51,15 @@ public class UserController {
         }
     }
 
-    @PostMapping("/customer/login")
-    public ResponseEntity<?> loginUser(@RequestHeader String email){
-        System.out.println("header email " + email);
-        userDataService.loginByEmail(email);
-        Map<String,String> returnBody = new LinkedHashMap<>();
-        returnBody.put("status","success");
-        returnBody.put("message","check your email for the code");
-        return ResponseEntity.ok(returnBody);
-    }
+//    @PostMapping("/customer/login")
+//    public ResponseEntity<?> loginUser(@RequestHeader String email){
+//        System.out.println("header email " + email);
+//        userDataService.loginByEmail(email);
+//        Map<String,String> returnBody = new LinkedHashMap<>();
+//        returnBody.put("status","success");
+//        returnBody.put("message","check your email for the code");
+//        return ResponseEntity.ok(returnBody);
+//    }
 
     @PostMapping("/customer/login/google")
     public ResponseEntity<?> loginUser(@RequestHeader(required = false) String email, @RequestHeader(value = "phone", required = false) String phoneNumber){

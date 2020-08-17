@@ -5,9 +5,7 @@ import com.genericauthserver.mapper.AuthorityMapper;
 import com.genericauthserver.service.authority.AuthorityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -40,5 +38,17 @@ public class AuthorityController {
         returnBody.put("status","success");
         returnBody.put("authority_list",authorityDtoList);
         return ResponseEntity.ok(returnBody);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> addNewAuthority(@RequestBody AuthorityDto dto){
+
+        int id = authorityService.addNewAuthority(dto);
+        Map<String,Object> returnBody = new LinkedHashMap<>();
+        returnBody.put("status","success");
+        returnBody.put("authority_id",id);
+
+        return ResponseEntity.ok(returnBody);
+
     }
 }

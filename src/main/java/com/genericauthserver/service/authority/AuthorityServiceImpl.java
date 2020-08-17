@@ -1,8 +1,11 @@
 package com.genericauthserver.service.authority;
 
+import com.genericauthserver.dto.AuthorityDto;
 import com.genericauthserver.entity.Authority;
+import com.genericauthserver.mapper.AuthorityMapper;
 import com.genericauthserver.repository.AuthorityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,10 +14,19 @@ import java.util.List;
 public class AuthorityServiceImpl implements AuthorityService {
 
     private final AuthorityRepository authorityRepository;
+    private final AuthorityMapper authorityMapper;
 
     @Autowired
-    public AuthorityServiceImpl(AuthorityRepository authorityRepository) {
+    public AuthorityServiceImpl(AuthorityRepository authorityRepository,
+                                @Lazy AuthorityMapper authorityMapper) {
         this.authorityRepository = authorityRepository;
+        this.authorityMapper = authorityMapper;
+    }
+
+    @Override
+    public int addNewAuthority(AuthorityDto dto) {
+        dto.setName("ROLE_"+dto.getName().toUpperCase());
+        return authorityRepository.save(authorityMapper.convertToAuthorityEntity(dto)).getId();
     }
 
     @Override
