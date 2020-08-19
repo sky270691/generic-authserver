@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface AuthorityRepository extends JpaRepository<Authority,Integer> {
 
     Optional<Authority> findAuthorityById(int id);
-    Optional<Authority> findAuthorityByName(String name);
+    Optional<Authority> findByNameContains(String name);
 }

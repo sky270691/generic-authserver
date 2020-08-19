@@ -192,7 +192,8 @@ public class UserDataServiceImpl implements UserDataService {
         Optional<User> existingUserEmail = userRepository.findByEmail(dto.getEmail());
         Optional<User> existingUserPhone = userRepository.findByPhoneNumber(dto.getPhoneNumber());
         user.setAuthorityList(new ArrayList<>());
-        Authority authority = authorityService.findAuthorityById(2);
+
+        Authority authority = authorityService.findAuthorityByName("ROLE_USER");
         user.getAuthorityList().add(authority);
 
         if(!existingUserEmail.isEmpty()){
@@ -300,6 +301,28 @@ public class UserDataServiceImpl implements UserDataService {
 //        }
 //
 
+    }
+
+    @Override
+    public void addNewSellerByCms(UserRegisterUpdateDto dto) {
+        User seller = userMapper.convertUserRegisterUpdateDtoToUserEntity(dto,passwordEncoder);
+        String userEmail = userRepository.save(seller).getEmail();
+        activateSellerAccount(userEmail);
+    }
+
+    @Override
+    public void activateSellerAccount(String email) {
+        User user = findUserByEmail(email);
+        Authority sellerAuthority = authorityService.findAll().stream()
+                .filter(authority -> authority.getName().contains("SELLER"))
+                .findAny()
+                .orElseThrow(()->new UserException("Authority failed to input"));
+        if(user.getAuthorityList().stream().noneMatch(auth->auth.getName().contains("SELLER"))){
+            if (user.getAuthorityList() == null) {
+                user.setAuthorityList(new ArrayList<>());
+            }
+            user.getAuthorityList().add(sellerAuthority);
+        }
     }
 
     @Override
