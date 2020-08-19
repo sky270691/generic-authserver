@@ -317,11 +317,13 @@ public class UserDataServiceImpl implements UserDataService {
                 .filter(authority -> authority.getName().contains("SELLER"))
                 .findAny()
                 .orElseThrow(()->new UserException("Authority failed to input"));
+        if (user.getAuthorityList() == null) {
+            user.setAuthorityList(new ArrayList<>());
+        }
         if(user.getAuthorityList().stream().noneMatch(auth->auth.getName().contains("SELLER"))){
-            if (user.getAuthorityList() == null) {
-                user.setAuthorityList(new ArrayList<>());
-            }
             user.getAuthorityList().add(sellerAuthority);
+        }else{
+            throw new UserException("User already a seller");
         }
     }
 
