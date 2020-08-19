@@ -304,6 +304,7 @@ public class UserDataServiceImpl implements UserDataService {
     }
 
     @Override
+    @Transactional
     public void addNewSellerByCms(UserRegisterUpdateDto dto) {
         User seller = userMapper.convertUserRegisterUpdateDtoToUserEntity(dto,passwordEncoder);
         String userEmail = userRepository.save(seller).getEmail();
@@ -311,6 +312,7 @@ public class UserDataServiceImpl implements UserDataService {
     }
 
     @Override
+    @Transactional
     public void activateSellerAccount(String email) {
         User user = findUserByEmail(email);
         Authority sellerAuthority = authorityService.findAll().stream()
@@ -325,6 +327,7 @@ public class UserDataServiceImpl implements UserDataService {
         }else{
             throw new UserException("User already a seller");
         }
+        userRepository.save(user);
     }
 
     @Override
