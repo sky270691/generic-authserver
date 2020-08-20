@@ -306,6 +306,10 @@ public class UserDataServiceImpl implements UserDataService {
     @Override
     @Transactional
     public void addNewSellerByCms(UserRegisterUpdateDto dto) {
+        User user = findUserByEmail(dto.getEmail());
+        if(user != null){
+            throw new UserException("user with email: "+dto.getEmail()+" already exist");
+        }
         User seller = userMapper.convertUserRegisterUpdateDtoToUserEntity(dto,passwordEncoder);
         String userEmail = userRepository.save(seller).getEmail();
         activateSellerAccount(userEmail);
