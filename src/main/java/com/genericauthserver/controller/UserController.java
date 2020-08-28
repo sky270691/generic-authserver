@@ -68,9 +68,7 @@ public class UserController {
 
         if(email != null && !email.equalsIgnoreCase("")){
             token = userDataService.loginByEmailGoogle(email);
-        }
-
-        if(phoneNumber != null && !phoneNumber.equalsIgnoreCase("")){
+        }else if(phoneNumber != null && !phoneNumber.equalsIgnoreCase("")){
             token = userDataService.loginByPhoneGoogle(phoneNumber);
         }
 
