@@ -30,6 +30,7 @@ public class User {
 
     private String sex;
 
+    @Column(name = "fcm_data")
     private String fcmData;
 
     @Column(name = "date_of_birth")

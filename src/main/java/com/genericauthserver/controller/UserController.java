@@ -68,9 +68,7 @@ public class UserController {
 
         if(email != null && !email.equalsIgnoreCase("")){
             token = userDataService.loginByEmailGoogle(email);
-        }
-
-        if(phoneNumber != null && !phoneNumber.equalsIgnoreCase("")){
+        }else if(phoneNumber != null && !phoneNumber.equalsIgnoreCase("")){
             token = userDataService.loginByPhoneGoogle(phoneNumber);
         }
 
@@ -196,4 +194,12 @@ public class UserController {
         return ResponseEntity.ok(returnBody);
     }
 
+    @PostMapping("/add_new_seller")
+    public ResponseEntity<?> activateSellerRole(@RequestBody UserRegisterUpdateDto userRegisterUpdateDto){
+
+        userDataService.addNewSellerByCms(userRegisterUpdateDto);
+        Map<String,String> returnBody = new LinkedHashMap<>();
+        returnBody.put("status","success");
+        return ResponseEntity.ok(returnBody);
+    }
 }

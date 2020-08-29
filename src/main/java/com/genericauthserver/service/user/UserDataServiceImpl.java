@@ -192,7 +192,8 @@ public class UserDataServiceImpl implements UserDataService {
         Optional<User> existingUserEmail = userRepository.findByEmail(dto.getEmail());
         Optional<User> existingUserPhone = userRepository.findByPhoneNumber(dto.getPhoneNumber());
         user.setAuthorityList(new ArrayList<>());
-        Authority authority = authorityService.findAuthorityById(2);
+
+        Authority authority = authorityService.findAuthorityByName("ROLE_USER");
         user.getAuthorityList().add(authority);
 
         if(!existingUserEmail.isEmpty()){
@@ -287,6 +288,14 @@ public class UserDataServiceImpl implements UserDataService {
         if(userRegisterUpdateDto.getEmail() !=null && !userRegisterUpdateDto.getEmail().equalsIgnoreCase("")){
             user.setEmail(userRegisterUpdateDto.getEmail());
         }
+        if(userRegisterUpdateDto.getFcmDataList() != null && !userRegisterUpdateDto.getFcmDataList().isEmpty()){
+            for (int i = 0; i < userRegisterUpdateDto.getFcmDataList().size(); i++) {
+                if(i == userRegisterUpdateDto.getFcmDataList().size()-1){
+                    user.setFcmData(userRegisterUpdateDto.getFcmDataList().get(i));
+                }
+                user.setFcmData(userRegisterUpdateDto.getFcmDataList().get(i)+";");
+            }
+        }
 
         userRepository.save(user);
 
@@ -300,6 +309,43 @@ public class UserDataServiceImpl implements UserDataService {
 //        }
 //
 
+    }
+
+    @Override
+    @Transactional
+    public void addNewSellerByCms(UserRegisterUpdateDto dto) {
+        User user = null;
+
+        try {
+            user = findUserByEmail(dto.getEmail());
+        } catch (UserException exception) {
+            User seller = userMapper.convertUserRegisterUpdateDtoToUserEntity(dto,passwordEncoder);
+            String userEmail = userRepository.save(seller).getEmail();
+            activateSellerAccount(userEmail);
+        }
+
+        if(user != null){
+            throw new UserException("user with email: "+dto.getEmail()+" already exist");
+        }
+    }
+
+    @Override
+    @Transactional
+    public void activateSellerAccount(String email) {
+        User user = findUserByEmail(email);
+        Authority sellerAuthority = authorityService.findAll().stream()
+                .filter(authority -> authority.getName().contains("SELLER"))
+                .findAny()
+                .orElseThrow(()->new UserException("Authority failed to input"));
+        if (user.getAuthorityList() == null) {
+            user.setAuthorityList(new ArrayList<>());
+        }
+        if(user.getAuthorityList().stream().noneMatch(auth->auth.getName().contains("SELLER"))){
+            user.getAuthorityList().add(sellerAuthority);
+        }else{
+            throw new UserException("User already a seller");
+        }
+        userRepository.save(user);
     }
 
     @Override

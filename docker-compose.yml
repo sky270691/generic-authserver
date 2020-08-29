@@ -68,6 +68,7 @@ services:
       - 5400:5432
     volumes:
     - type: bind
+#      source: /data/container/live/database/authserver/postgres
       source: /data/container/beta/database/authserver/postgres
       target: /var/lib/postgresql/data
     environment:
@@ -81,6 +82,7 @@ services:
       - 5401:5432
     volumes:
       - type: bind
+#        source: /data/container/live/database/satutasmerah/postgres
         source: /data/container/beta/database/satutasmerah/postgres
         target: /var/lib/postgresql/data
     environment:

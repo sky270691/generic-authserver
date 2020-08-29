@@ -26,4 +26,6 @@ public interface UserDataService extends UserDetailsService{
     String loginByEmailGoogle(String email);
     User findUserByPhoneNumber(String phoneNumnber);
     void updateUserDataGoogle(UserRegisterUpdateDto userRegisterUpdateDto);
+    void addNewSellerByCms(UserRegisterUpdateDto dto);
+    void activateSellerAccount(String email);
 }
