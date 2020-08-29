@@ -288,6 +288,14 @@ public class UserDataServiceImpl implements UserDataService {
         if(userRegisterUpdateDto.getEmail() !=null && !userRegisterUpdateDto.getEmail().equalsIgnoreCase("")){
             user.setEmail(userRegisterUpdateDto.getEmail());
         }
+        if(userRegisterUpdateDto.getFcmDataList() != null && !userRegisterUpdateDto.getFcmDataList().isEmpty()){
+            for (int i = 0; i < userRegisterUpdateDto.getFcmDataList().size(); i++) {
+                if(i == userRegisterUpdateDto.getFcmDataList().size()-1){
+                    user.setFcmData(userRegisterUpdateDto.getFcmDataList().get(i));
+                }
+                user.setFcmData(userRegisterUpdateDto.getFcmDataList().get(i)+";");
+            }
+        }
 
         userRepository.save(user);
 
