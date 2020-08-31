@@ -56,9 +56,9 @@ public class UserDataServiceImpl implements UserDataService {
                                @Value("${resource-server.register-endpoint.url}")
                                        String resourceServerBackendRegistrationUrl,
                                UserMapper userMapper,
-                               @Value("auth-server.login-endpoint.url") String authServerLoginUrl,
-                               @Value("auth-server.jwttoken-endpoint.url") String authServerJwtTokenUrl,
-                               @Value("resource-server.activateseller-endpoint.url") String backendActivateSellerUrl) {
+                               @Value("${auth-server.login-endpoint.url}") String authServerLoginUrl,
+                               @Value("${auth-server.jwttoken-endpoint.url}") String authServerJwtTokenUrl,
+                               @Value("${resource-server.activateseller-endpoint.url}") String backendActivateSellerUrl) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityService = authorityService;
