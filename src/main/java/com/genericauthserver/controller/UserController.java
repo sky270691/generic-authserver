@@ -202,4 +202,14 @@ public class UserController {
         returnBody.put("status","success");
         return ResponseEntity.ok(returnBody);
     }
+
+    @DeleteMapping("/users/delete/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id){
+
+        userDataService.deleteUser(id);
+
+        Map<String,String> returnBody = new LinkedHashMap<>();
+        returnBody.put("status","success");
+        return ResponseEntity.ok(returnBody);
+    }
 }

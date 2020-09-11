@@ -28,4 +28,5 @@ public interface UserDataService extends UserDetailsService{
     void updateUserDataGoogle(UserRegisterUpdateDto userRegisterUpdateDto);
     void addNewSellerByCms(UserRegisterUpdateDto dto);
     void activateSellerAccount(String email);
+    void deleteUser(Long id);
 }

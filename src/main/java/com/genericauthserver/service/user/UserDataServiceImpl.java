@@ -349,6 +349,11 @@ public class UserDataServiceImpl implements UserDataService {
     }
 
     @Override
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
     public boolean updatePassword(UserResetPasswordDto userResetPasswordDto, String codeHeader) {
         if(codeHeader!=null && USER_TEMP_CODE_PAIR.containsKey(codeHeader)){
             User user;
