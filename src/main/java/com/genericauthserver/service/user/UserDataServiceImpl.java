@@ -433,6 +433,8 @@ public class UserDataServiceImpl implements UserDataService {
         Optional<User> user = userRepository.findByPhoneNumber(phoneNumber);
         if(user.isEmpty()){
             User newUser = new User();
+            newUser.setFirstName("Pelanggan");
+            newUser.setLastName("Baru");
             newUser.setPhoneNumber(phoneNumber);
             newUser.setPassword(passwordEncoder.encode(phoneNumber));
             newUser.setAuthorityList(new ArrayList<>());
