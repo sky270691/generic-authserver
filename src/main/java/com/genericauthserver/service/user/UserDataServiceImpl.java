@@ -43,6 +43,8 @@ public class UserDataServiceImpl implements UserDataService {
     private final AuthCodeService authCodeService;
     private final String resourceServerBackendRegistrationUrl;
     private final UserMapper userMapper;
+    private final String backendEndpointPrefix;
+    private final String authserverEndpointPrefix;
     private static final Map<String,User> USER_TEMP_CODE_PAIR = new HashMap<>();
 
     @Autowired
@@ -52,12 +54,16 @@ public class UserDataServiceImpl implements UserDataService {
                                AuthCodeService authCodeService,
                                @Value("${resource-server.register-endpoint.url}")
                                        String resourceServerBackendRegistrationUrl,
-                               UserMapper userMapper) {
+                               UserMapper userMapper,
+                               @Value("${backend.live-endpoint.prefix}") String backendEndpointPrefix,
+                               @Value("${auth-server.live-endpoint.prefix}") String authserverEndpointPrefix) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityService = authorityService;
         this.resourceServerBackendRegistrationUrl = resourceServerBackendRegistrationUrl;
         this.userMapper = userMapper;
+        this.backendEndpointPrefix = backendEndpointPrefix;
+        this.authserverEndpointPrefix = authserverEndpointPrefix;
         this.logger = LoggerFactory.getLogger(this.getClass());
         this.authCodeService = authCodeService;
     }
@@ -96,7 +102,7 @@ public class UserDataServiceImpl implements UserDataService {
         HttpHeaders headers = new HttpHeaders();
 //        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.set("Authorization",fullAuthHeader);
-        String url = "https://api.satutasmerah.com:8443/oauth/authorize?scope=READ_WRITE&client_id=front-stm&response_type=code";
+        String url = authserverEndpointPrefix+"oauth/authorize?scope=READ_WRITE&client_id=front-stm&response_type=code";
 
         HttpEntity<?> entity = new HttpEntity<>(headers);
 
@@ -125,7 +131,7 @@ public class UserDataServiceImpl implements UserDataService {
         multiValueMap.add("code",authCode);
 
         HttpEntity<MultiValueMap<String,String>> entity =new HttpEntity<>(multiValueMap,headers);
-        String url = "https://api.satutasmerah.com:8443/oauth/token";
+        String url = authserverEndpointPrefix+"oauth/token";
 
         ResponseEntity<String> response = null;
         try {
@@ -163,7 +169,7 @@ public class UserDataServiceImpl implements UserDataService {
         multiValueMap.add("password",emailOrPhone);
 
         HttpEntity<MultiValueMap<String,String>> entity =new HttpEntity<>(multiValueMap,headers);
-        String url = "https://api.satutasmerah.com:8443/oauth/token";
+        String url = authserverEndpointPrefix+"oauth/token";
 
         ResponseEntity<String> response = null;
         try {
@@ -206,7 +212,7 @@ public class UserDataServiceImpl implements UserDataService {
         UserRegisterUpdateDto registeredUser =  userMapper.convertToUserRegisterUpdateDto(userRepository.save(user));
         HttpEntity<UserRegisterUpdateDto> entity = new HttpEntity<>(registeredUser);
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.exchange(resourceServerBackendRegistrationUrl, HttpMethod.POST,entity,String.class);
+        restTemplate.exchange(authserverEndpointPrefix+"api/v1/users/register", HttpMethod.POST,entity,String.class);
 
         return registeredUser;
     }
@@ -391,7 +397,7 @@ public class UserDataServiceImpl implements UserDataService {
             HttpEntity<?> entity = new HttpEntity<>(headers);
 
             RestTemplate restTemplate = new RestTemplate();
-            String url = "https://api.satutasmerah.com/api/v1/users/activate_seller/"+savedUser.getEmail();
+            String url = backendEndpointPrefix+"api/v1/users/activate_seller/"+savedUser.getEmail();
             try {
                 restTemplate.exchange(url,HttpMethod.PUT,entity,String.class);
             } catch (RestClientException e) {

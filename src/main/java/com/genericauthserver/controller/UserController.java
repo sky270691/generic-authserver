@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -24,12 +23,15 @@ public class UserController {
     private final UserDataService userDataService;
     private final Logger logger;
     private final String appId;
+    private final String backendEndpointPrefix;
 
     @Autowired
     public UserController(UserDataService userDataService,
-                          @Value("${endpoint.header.appid}") String appId) {
+                          @Value("${endpoint.header.appid}") String appId,
+                          @Value("${backend.live-endpoint.prefix}") String backendEndpointPrefix) {
         this.userDataService = userDataService;
         this.appId = appId;
+        this.backendEndpointPrefix = backendEndpointPrefix;
         this.logger  = LoggerFactory.getLogger(this.getClass());
     }
 
@@ -72,11 +74,11 @@ public class UserController {
             token = userDataService.loginByPhoneGoogle(phoneNumber);
         }
 
-        String url = "https://api.satutasmerah.com/api/v1/users?token_value="+token+"&Server_Data=true";
+        String url = backendEndpointPrefix+"api/v1/users?token_value="+token+"&Server_Data=true";
         if(email == null){
-            url = "https://api.satutasmerah.com/api/v1/users?token_value="+token+"&Server_Data=true&credential="+phoneNumber;
+            url = backendEndpointPrefix+"api/v1/users?token_value="+token+"&Server_Data=true&credential="+phoneNumber;
         }else if(phoneNumber == null){
-            url = "https://api.satutasmerah.com/api/v1/users?token_value="+token+"&Server_Data=true&credential="+email;
+            url = backendEndpointPrefix+"api/v1/users?token_value="+token+"&Server_Data=true&credential="+email;
         }
 
         Map<String,String> returnBody = new LinkedHashMap<>();
