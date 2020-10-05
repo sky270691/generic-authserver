@@ -41,7 +41,6 @@ public class UserDataServiceImpl implements UserDataService {
     private final AuthorityService authorityService;
     private final Logger logger;
     private final AuthCodeService authCodeService;
-    private final String resourceServerBackendRegistrationUrl;
     private final UserMapper userMapper;
     private final String backendEndpointPrefix;
     private final String authserverEndpointPrefix;
@@ -52,15 +51,12 @@ public class UserDataServiceImpl implements UserDataService {
                                PasswordEncoder passwordEncoder,
                                AuthorityService authorityService,
                                AuthCodeService authCodeService,
-                               @Value("${resource-server.register-endpoint.url}")
-                                       String resourceServerBackendRegistrationUrl,
                                UserMapper userMapper,
                                @Value("${backend.live-endpoint.prefix}") String backendEndpointPrefix,
                                @Value("${auth-server.live-endpoint.prefix}") String authserverEndpointPrefix) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityService = authorityService;
-        this.resourceServerBackendRegistrationUrl = resourceServerBackendRegistrationUrl;
         this.userMapper = userMapper;
         this.backendEndpointPrefix = backendEndpointPrefix;
         this.authserverEndpointPrefix = authserverEndpointPrefix;
