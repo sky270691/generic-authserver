@@ -48,6 +48,7 @@ services:
         target: /logs/backend
       - type: bind
         source: /apps/satutasmerah/datastorage
+#        source: /beta/apps/satutasmerah/datastorage
         target: /app/data
       - type: bind
         source: /etc/letsencrypt/live/api.satutasmerah.com
