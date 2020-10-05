@@ -28,7 +28,7 @@ public class UserController {
     @Autowired
     public UserController(UserDataService userDataService,
                           @Value("${endpoint.header.appid}") String appId,
-                          @Value("${backend.live-endpoint.prefix}") String backendEndpointPrefix) {
+                          @Value("${backend.beta-endpoint.prefix}") String backendEndpointPrefix) {
         this.userDataService = userDataService;
         this.appId = appId;
         this.backendEndpointPrefix = backendEndpointPrefix;
