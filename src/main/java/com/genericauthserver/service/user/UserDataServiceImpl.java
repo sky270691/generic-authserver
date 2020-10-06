@@ -268,7 +268,25 @@ public class UserDataServiceImpl implements UserDataService {
     @Override
     public void updateUserDataGoogle(UserRegisterUpdateDto userRegisterUpdateDto){
         User user = null;
-        if(userRegisterUpdateDto.getEmail() != null){
+//        if(userRegisterUpdateDto.getEmail() != null){
+//            user = userRepository.findByEmail(userRegisterUpdateDto.getEmail())
+//                    .orElseThrow(()-> new UserException("user with email: '"+userRegisterUpdateDto.getEmail()+"' not found"));
+//        }else if(userRegisterUpdateDto.getPhoneNumber() != null){
+//            user = userRepository.findByPhoneNumber(userRegisterUpdateDto.getPhoneNumber())
+//                    .orElseThrow(()-> new UserException("user with phone number: '"+userRegisterUpdateDto.getPhoneNumber()+"' not found"));
+//        }
+
+        if(userRegisterUpdateDto.getEmail() != null && userRegisterUpdateDto.getPhoneNumber() != null){
+            Optional<User> userOptionalByEmail = userRepository.findByEmail(userRegisterUpdateDto.getEmail());
+            Optional<User> userOptionalByPhone = userRepository.findByPhoneNumber(userRegisterUpdateDto.getPhoneNumber());
+            if(userOptionalByEmail.isPresent()){
+                user = userOptionalByEmail.get();
+            }else if(userOptionalByPhone.isPresent()){
+                user = userOptionalByPhone.get();
+            }else {
+                throw new UserException("user not found");
+            }
+        }else if(userRegisterUpdateDto.getEmail() != null){
             user = userRepository.findByEmail(userRegisterUpdateDto.getEmail())
                     .orElseThrow(()-> new UserException("user with email: '"+userRegisterUpdateDto.getEmail()+"' not found"));
         }else if(userRegisterUpdateDto.getPhoneNumber() != null){
@@ -433,8 +451,6 @@ public class UserDataServiceImpl implements UserDataService {
         Optional<User> user = userRepository.findByPhoneNumber(phoneNumber);
         if(user.isEmpty()){
             User newUser = new User();
-            newUser.setFirstName("Pelanggan");
-            newUser.setLastName("Baru");
             newUser.setPhoneNumber(phoneNumber);
             newUser.setPassword(passwordEncoder.encode(phoneNumber));
             newUser.setAuthorityList(new ArrayList<>());
