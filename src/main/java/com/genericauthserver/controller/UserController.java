@@ -182,7 +182,7 @@ public class UserController {
     }
 
     @PutMapping("/update_user_fcm")
-    public ResponseEntity<?> updateUserFCM(@RequestBody List<String> fcm,
+    public ResponseEntity<?> updateUserFCM(@RequestBody Map<String,String> fcm,
                                            @RequestHeader String credential,
                                            @RequestHeader("server_data") String serverData){
 
@@ -190,7 +190,7 @@ public class UserController {
             throw new RuntimeException("Something is wrong");
         }
 
-        userDataService.updateUserFcm(fcm,credential);
+        userDataService.updateUserFcm(fcm.get("fcm"),credential);
         Map<String,String> returnBody = new LinkedHashMap<>();
         returnBody.put("status","success");
         return ResponseEntity.ok(returnBody);

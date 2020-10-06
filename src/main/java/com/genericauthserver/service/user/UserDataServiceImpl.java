@@ -356,7 +356,7 @@ public class UserDataServiceImpl implements UserDataService {
     }
 
     @Override
-    public void updateUserFcm(List<String> fcm, String credential) {
+    public void updateUserFcm(String fcm, String credential) {
         User user;
         if(credential.contains("@")){
             user = findUserByEmail(credential);
