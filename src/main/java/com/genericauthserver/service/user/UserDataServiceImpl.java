@@ -356,7 +356,7 @@ public class UserDataServiceImpl implements UserDataService {
     }
 
     @Override
-    public void updateUserFcm(String fcm, String credential) {
+    public void updateUserFcm(List<String> fcm, String credential) {
         User user;
         if(credential.contains("@")){
             user = findUserByEmail(credential);
@@ -364,7 +364,7 @@ public class UserDataServiceImpl implements UserDataService {
             user = findUserByPhoneNumber(credential);
         }
 
-        user.setFcmData(fcm);
+        user.setFcmData(String.join(";",fcm));
         userRepository.save(user);
     }
 

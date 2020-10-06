@@ -182,7 +182,7 @@ public class UserController {
     }
 
     @PutMapping("/update_user_fcm")
-    public ResponseEntity<?> updateUserFCM(@RequestBody String fcm,
+    public ResponseEntity<?> updateUserFCM(@RequestBody List<String> fcm,
                                            @RequestHeader String credential,
                                            @RequestHeader("server_data") String serverData){
 
