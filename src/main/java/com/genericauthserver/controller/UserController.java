@@ -181,6 +181,21 @@ public class UserController {
         return ResponseEntity.badRequest().body(returnBody);
     }
 
+    @PutMapping("/update_user_fcm")
+    public ResponseEntity<?> updateUserFCM(@RequestParam String fcm,
+                                           @RequestHeader String credential,
+                                           @RequestHeader("server_data") String serverData){
+
+        if(serverData == null || !serverData.equalsIgnoreCase("true")){
+            throw new RuntimeException("Something is wrong");
+        }
+
+        userDataService.updateUserFcm(fcm,credential);
+        Map<String,String> returnBody = new LinkedHashMap<>();
+        returnBody.put("status","success");
+        return ResponseEntity.ok(returnBody);
+    }
+
     @PutMapping("/edit_user_authority")
     public ResponseEntity<?> editUserAuthority(@RequestParam("email") String userEmail, @RequestBody Map<String, List<Integer>> authorityList){
         Map<String,Object> returnBody = new LinkedHashMap<>();

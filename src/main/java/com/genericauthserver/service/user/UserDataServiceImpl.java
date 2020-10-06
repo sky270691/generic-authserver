@@ -356,6 +356,19 @@ public class UserDataServiceImpl implements UserDataService {
     }
 
     @Override
+    public void updateUserFcm(String fcm, String credential) {
+        User user;
+        if(credential.contains("@")){
+            user = findUserByEmail(credential);
+        }else{
+            user = findUserByPhoneNumber(credential);
+        }
+
+        user.setFcmData(fcm);
+        userRepository.save(user);
+    }
+
+    @Override
     public boolean updatePassword(UserResetPasswordDto userResetPasswordDto, String codeHeader) {
         if(codeHeader!=null && USER_TEMP_CODE_PAIR.containsKey(codeHeader)){
             User user;

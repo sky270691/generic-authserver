@@ -29,4 +29,5 @@ public interface UserDataService extends UserDetailsService{
     void addNewSellerByCms(UserRegisterUpdateDto dto);
     void activateSellerAccount(String email);
     void deleteUser(Long id);
+    void updateUserFcm(String fcm, String credential);
 }
