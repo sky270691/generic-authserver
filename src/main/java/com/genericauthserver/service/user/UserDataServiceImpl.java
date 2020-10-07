@@ -448,17 +448,19 @@ public class UserDataServiceImpl implements UserDataService {
     @Override
     public String loginByPhoneGoogle(String phoneNumber){
 
+
+        phoneNumber = phoneNumber.trim();
+        if(phoneNumber.startsWith("0")){
+            phoneNumber = phoneNumber.replaceAll("^08","+628");
+        }else if(phoneNumber.startsWith("628")){
+            phoneNumber = phoneNumber.replaceAll("^628","+628");
+        }else if(phoneNumber.startsWith("8")){
+            phoneNumber = "+62"+phoneNumber;
+        }
+
         Optional<User> user = userRepository.findByPhoneNumber(phoneNumber);
         if(user.isEmpty()){
             User newUser = new User();
-            phoneNumber = phoneNumber.trim();
-            if(phoneNumber.startsWith("0")){
-                phoneNumber = phoneNumber.replaceAll("^08","+628");
-            }else if(phoneNumber.startsWith("628")){
-                phoneNumber = phoneNumber.replaceAll("^628","+628");
-            }else if(phoneNumber.startsWith("8")){
-                phoneNumber = "+62"+phoneNumber;
-            }
             newUser.setPhoneNumber(phoneNumber);
             newUser.setPassword(passwordEncoder.encode(phoneNumber));
             newUser.setAuthorityList(new ArrayList<>());
