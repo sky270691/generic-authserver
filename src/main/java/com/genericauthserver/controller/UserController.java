@@ -77,9 +77,9 @@ public class UserController {
         }
 
         String url = backendEndpointPrefix+"api/v1/users?token_value="+token+"&Server_Data=true";
-        if(email == null){
+        if(email == null && phoneNumber != null){
             url = backendEndpointPrefix+"api/v1/users?token_value="+token+"&Server_Data=true&credential="+phoneNumber;
-        }else if(phoneNumber == null){
+        }else if(phoneNumber == null && email != null){
             url = backendEndpointPrefix+"api/v1/users?token_value="+token+"&Server_Data=true&credential="+email;
         }
 
