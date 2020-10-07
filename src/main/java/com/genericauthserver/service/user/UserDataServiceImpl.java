@@ -451,9 +451,9 @@ public class UserDataServiceImpl implements UserDataService {
 
         phoneNumber = phoneNumber.trim();
         if(phoneNumber.startsWith("0")){
-            phoneNumber = phoneNumber.replaceAll("^08","+628");
-        }else if(phoneNumber.startsWith("628")){
-            phoneNumber = phoneNumber.replaceAll("^628","+628");
+            phoneNumber = phoneNumber.replaceAll("^0","+62");
+        }else if(phoneNumber.startsWith("62")){
+            phoneNumber = phoneNumber.replaceAll("^62","+62");
         }else if(phoneNumber.startsWith("8")){
             phoneNumber = "+62"+phoneNumber;
         }
