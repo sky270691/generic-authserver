@@ -4,9 +4,11 @@ import com.genericauthserver.entity.Client;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.provider.ClientDetails;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+@Component
 public class SecurityClient implements ClientDetails {
 
     private final Client client;
