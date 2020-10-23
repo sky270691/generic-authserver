@@ -10,12 +10,18 @@ import java.util.*;
 public class SecurityClient implements ClientDetails {
 
     private final Client client;
-
-    @Value("${auth-server.live-endpoint.prefix}")
     private String url;
 
     public SecurityClient(Client client) {
         this.client = client;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(@Value("${auth-server.live-endpoint.prefix}") String url) {
+        this.url = url;
     }
 
     @Override
@@ -60,7 +66,7 @@ public class SecurityClient implements ClientDetails {
 
     @Override
     public Set<String> getRegisteredRedirectUri() {
-        return Set.of(url+"api/v1/authcode");
+        return Set.of(getUrl()+"api/v1/authcode");
     }
 
 
