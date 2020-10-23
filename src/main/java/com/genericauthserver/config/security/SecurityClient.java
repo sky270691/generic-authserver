@@ -1,6 +1,7 @@
 package com.genericauthserver.config.security;
 
 import com.genericauthserver.entity.Client;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.provider.ClientDetails;
 
@@ -9,6 +10,9 @@ import java.util.*;
 public class SecurityClient implements ClientDetails {
 
     private final Client client;
+
+    @Value("${auth-server.live-endpoint.prefix}")
+    private String url;
 
     public SecurityClient(Client client) {
         this.client = client;
@@ -56,7 +60,7 @@ public class SecurityClient implements ClientDetails {
 
     @Override
     public Set<String> getRegisteredRedirectUri() {
-        return Set.of("https://api.satutasmerah.com:8443/api/v1/authcode");
+        return Set.of(url+"/api/v1/authcode");
     }
 
 
