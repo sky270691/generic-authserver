@@ -55,7 +55,7 @@ public class SecurityClient implements ClientDetails {
 
     @Override
     public Set<String> getRegisteredRedirectUri() {
-        return Set.of("https://staging.satutasmerah.com:8443/api/v1/authcode");
+        return Set.of("https://api.satutasmerah.com:8443/api/v1/authcode");
     }
 
 
