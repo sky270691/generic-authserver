@@ -18,7 +18,7 @@ services:
         source: /apps/jwtauthserver/logs
         target: /logs/authserver
       - type: bind
-        source: /etc/letsencrypt/live/staging.satutasmerah.com
+        source: /etc/letsencrypt/live/api.satutasmerah.com
         target: /cert
     environment:
       - APP_PORT=8443
@@ -51,7 +51,7 @@ services:
 #        source: /beta/apps/satutasmerah/datastorage
         target: /app/data
       - type: bind
-        source: /etc/letsencrypt/live/staging.satutasmerah.com
+        source: /etc/letsencrypt/live/api.satutasmerah.com
         target: /cert
     environment:
       - APP_PORT=8443
